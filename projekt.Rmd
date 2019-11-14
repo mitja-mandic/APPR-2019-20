@@ -1,6 +1,6 @@
 ---
 title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Janoš VIdali"
+author: "martin krpan"
 output:
   html_document: default
   pdf_document:
