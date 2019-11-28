@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Analiza starostne strukture prebivalstva po svetu
 
 Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
@@ -12,14 +7,15 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 
 ## Tematika
 
-Analiziral bom starostne strukture prebivalcev 10 držav na različnih celinah. Primerjal jih bom glede na razvitost države, torej glede na BDP na prebivalca po kupni moči, stopnjo izobraženosti prebivalstva in prevladujočo religijo. 
+Analiziral bom starostne strukture prebivalcev 10 držav (ZDA, Kitajska, Indija, Tajska, Iran, Nigerija, Kenija, Brazilija, Nemčija in Slovenija) na različnih celinah. 
 
-Zanimalo me bo, kako se starostna struktura spreminja znotraj držav ene religije, kako na starostno strukturo in rodnost vpliva razvitost držav in terciarno izobraženost prebivalstva.
+Primerjal jih bom glede na razvitost države, torej glede na BDP na prebivalca po kupni moči, stopnjo izobraženosti prebivalstva (kolikšen delež ima zaključeno osnovno šolo) in prevladujočo religijo. Primerjal bom tudi spremembe v starostnih strukturah v času - današnjo in pa strukturo izpred 30 let.
 
 Podatke bom zbiral na:
-+ https://www.worldbank.org/
-+ https://ec.europa.eu/eurostat/data/database
-+ https://www.wikipedia.org/
+
+* https://www.worldbank.org/
+* https://ec.europa.eu/eurostat/data/database
+* https://www.wikipedia.org/
 
 ## Program
 
