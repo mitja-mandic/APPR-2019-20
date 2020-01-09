@@ -29,36 +29,35 @@ starost65 <- StarostneStrukture_delezPrebivalstva %>% filter(Age_group == "Popul
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
 stran <- read_html(url)
 
-
-gpd.ppp.8089 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table") %>%
+#osemdeseta
+gdp.ppp.8089 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[2]") %>%
   html_table(fill=TRUE)
+colnames(gdp.ppp.8089) <- c("country", 1980:1989)
+osemdeseta = seq(1980, 1989, by=5)
+gdp.ppp.8089 <- gdp.ppp.8089 %>% select(c('country',"1980","1985"))
 
-colnames(gpd.ppp.8089) <- c("country", leta = 1980:1989)
-
-
-gpd.ppp.8089 <- gpd.ppp.8089 %>% gather(year, bdp, as.character(1980:1989)) %>% 
+gpd.ppp.8089 <- gpd.ppp.8089 %>% gather(year, bdp, as.character(osemdeseta))   %>%
   arrange(country)
 
-gdp.ppp.9099 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[2]") %>%
+#devetdeseta
+gdp.ppp.9099 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[3]") %>%
   html_table(fill=TRUE)
 colnames(gdp.ppp.9099) <- c("country", 1990:1999)
-
-
-
-gpd.ppp.9099 <- gpd.ppp.9099 %>% gather(year, bdp, as.character(1990:1999)) %>% 
+gpd.ppp.9099<- gpd.ppp.9099 %>% gather(year, bdp, as.character(1990:1999)) %>% 
   arrange(country)
 
-gdp.ppp.0009 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[3]") %>%
+
+#2000-2010
+gpd.ppp.0009 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[4]") %>%
   html_table(fill=TRUE)
 colnames(gdp.ppp.0009) <- c("country", 2000:2009)
-gpd.ppp.0009<- gpd.ppp.0009 %>% gather(year, bdp, as.character(2000:2009)) %>% 
+gpd.ppp.0009 <- gpd.ppp.0009 %>% gather(year, bdp, as.character(2000:2009)) %>% 
   arrange(country)
 
-gpd.ppp.1019 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[4]") %>%
+
+#2010 - 2019
+gpd.ppp.1019 <- stran %>% html_node(xpath = "//*[@id = 'mw-content-text']/div/table[5]") %>%
   html_table(fill=TRUE)
 colnames(gdp.ppp.1019) <- c("country", 2010:2019)
 gpd.ppp.1019 <- gpd.ppp.1019 %>% gather(year, bdp, as.character(2010:2019)) %>% 
   arrange(country)
-
-
-
