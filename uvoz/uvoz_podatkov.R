@@ -42,6 +42,9 @@ bdp_dvajseta <- stran %>%
   mutate(year=parse_number(year),
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
+bdpji <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta)
+bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
+
 
 religije <- read.csv("podatki/religije.csv", na=c("5000")) %>%
   rename(country = name) 
