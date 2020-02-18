@@ -1,10 +1,4 @@
-library(readr)
-library(dplyr)
-library(rvest)
-library(XML)
-library(gsubfn)
-library(tidyr)
-library(stringr)
+
 leta <- seq(1960, 2015, by=5)
 
 StarostneStrukture_delezPrebivalstva <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
@@ -20,13 +14,42 @@ StarostneStrukture_janos <- StarostneStrukture_delezPrebivalstva %>%
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
 stran <- read_html(url)
 
-tabela_wiki <- stran %>% 
+bdp_osemdeseta <- stran %>% 
   html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[1]] %>%
   html_table() %>% rename(country=`Country (or dependent territory)`) %>%
   gather(year, gdp, -country) %>%
   mutate(year=parse_number(year),
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
-religije <- read.csv("podatki/religije.csv", na=c("5000"))
+bdp_devetdeseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[2]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
+bdp_deseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[3]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+bdp_dvajseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[4]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+
+religije <- read.csv("podatki/religije.csv", na=c("5000")) %>%
+  rename(country = name) 
+religije$country <- standardize.countrynames(religije$country, suggest = "auto", print.changes = FALSE)
+
+
+svet <- uvozi.zemljevid(
+  "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
+  "ne_50m_admin_0_countries", encoding="UTF-8")
+svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
 
