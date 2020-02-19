@@ -47,7 +47,8 @@ bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print
 
 
 religije <- read.csv("podatki/religije.csv", na=c("5000")) %>%
-  rename(country = name) 
+  rename(country = name) %>%
+  select(-"pop2019")
 religije$country <- standardize.countrynames(religije$country, suggest = "auto", print.changes = FALSE)
 
 
@@ -55,4 +56,8 @@ svet <- uvozi.zemljevid(
   "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
   "ne_50m_admin_0_countries", encoding="UTF-8")
 svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
+
+populacija <- read.csv("podatki/populacija.csv", na = ("..")) %>%
+  select(-"ï..Series.Name",-"Series.Code",-"Country.Code")
+colnames(populacija) <- c("country", leta)
 
