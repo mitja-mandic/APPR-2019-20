@@ -42,7 +42,7 @@ bdp_dvajseta <- stran %>%
   mutate(year=parse_number(year),
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
-bdpji <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta)
+bdpji <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
 bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
 
 
@@ -58,6 +58,10 @@ svet <- uvozi.zemljevid(
 svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
 
 populacija <- read.csv("podatki/populacija.csv", na = ("..")) %>%
-  select(-"ï..Series.Name",-"Series.Code",-"Country.Code")
+  select(-"ï..Series.Name",-"Series.Code",-"Country.Code") 
 colnames(populacija) <- c("country", leta)
+
+populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
+  mutate(year=parse_number(year))
+populacija$country <- standardize.countrynames(populacija$country, suggest = "auto", print.changes = FALSE)
 
