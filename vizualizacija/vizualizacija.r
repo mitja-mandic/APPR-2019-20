@@ -1,17 +1,38 @@
-
-starost64 <- StarostneStrukture_janos %>% filter(Age_group == "65 in vec") %>% filter(year == "1960")
-
-
-bdp_starostneStrukture65 <- inner_join(bdpji, StarostneStrukture_janos, by = c("year", "country")) %>% 
-  filter(Age_group == "65 in vec")
-
-bdp_starostne65_graf <- ggplot(bdp_starostneStrukture65, aes(x=gdp, y=percentage)) +
+bdp_starostneStrukture014 <- inner_join(bdpji, StarostneStrukture_janos, by = c("year", "country")) %>% 
+  filter(Age_group == "0-14")
+bdp_starostne014_graf <- ggplot(bdp_starostneStrukture014, aes(x=gdp, y=percentage)) +
   geom_point() + scale_x_log10() + facet_wrap(~year)
+#print(bdp_starostne014_graf)
 
 # + geom_hline(yintercept = group_by(bdp_starostneStrukture65, year) %>%
 #               summarise(povp = mean(percentage)))
 
-print(bdp_starostne65_graf)
+
+bdp_starostneStrukture65 <- inner_join(bdpji, StarostneStrukture_janos, by = c("year", "country")) %>% 
+  filter(Age_group == "65+")
+bdp_starostne65_graf <- ggplot(bdp_starostneStrukture65, aes(x=gdp, y=percentage)) +
+  geom_point() + scale_x_log10() + facet_wrap(~year)
+
+#print(bdp_starostne65_graf)
+
+
+#grafi spreminjanja starostnih struktur skozi leta
+starostne_strukture014 <- StarostneStrukture_janos %>% filter(Age_group=="0-14") %>% filter(year>= "1980")
+starostneStruture014_graf <- ggplot(starostne_strukture014, aes(x=percentage)) + 
+  geom_histogram(binwidth = 0.7) + facet_wrap(~year)
+
+starostne_strukture1564 <- StarostneStrukture_janos %>% filter(Age_group=="15-64") %>% filter(year>= "1980")
+starostneStruture1564_graf <- ggplot(starostne_strukture1564, aes(x=percentage)) + 
+  geom_histogram(binwidth = 0.7) + facet_wrap(~year)
+
+#print(starostneStruture1564_graf)
+
+starostne_strukture65 <- StarostneStrukture_janos %>% filter(Age_group=="65+") %>% filter(year>= "1980")
+starostneStruture65_graf <- ggplot(starostne_strukture65, aes(x=percentage)) + 
+  geom_histogram(binwidth = 0.7) + facet_wrap(~year)
+
+print(starostneStruture65_graf)
+
 
 
 
