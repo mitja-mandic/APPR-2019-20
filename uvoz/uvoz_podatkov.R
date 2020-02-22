@@ -8,7 +8,7 @@ StarostneStrukture_janos <- StarostneStrukture_delezPrebivalstva %>%
   gather(year, percentage, -Age_group, -country, na.rm=TRUE) %>% # odstranimo manjkajoče vrednosti
   mutate(year=parse_number(year), # leta pretvorimo v števila
          Age_group=parse_number(Age_group) %>% # uvedemo urejen faktor za skupine
-           factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65 in več"),
+           factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65+"),
                   ordered=TRUE))
 
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
