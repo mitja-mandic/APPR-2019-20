@@ -1,4 +1,4 @@
-
+source("lib/libraries.r", encoding="UTF-8")
 leta <- seq(1960, 2015, by=5)
 
 StarostneStrukture_delezPrebivalstva <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
