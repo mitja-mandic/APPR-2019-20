@@ -1,15 +1,32 @@
 source("lib/libraries.r", encoding="UTF-8")
 leta <- seq(1960, 2015, by=5)
+leta2 <- seq(1980, 2015, by=5)
 
-StarostneStrukture_delezPrebivalstva <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
-colnames(StarostneStrukture_delezPrebivalstva) <- c("Age_group", "country", leta)
 
-StarostneStrukture_janos <- StarostneStrukture_delezPrebivalstva %>%
+StarostneStrukture_delezPrebivalstva_podatki <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
+colnames(StarostneStrukture_delezPrebivalstva_podatki) <- c("Age_group", "country", leta)
+
+StarostneStruktureCelota_podatki <- read_csv("podatki/starostneStrukture.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
+colnames(StarostneStruktureCelota_podatki) <- c("Age_group", "country", leta2)
+
+
+StarostneStruktureProcent_janos <- StarostneStrukture_delezPrebivalstva_podatki %>%
   gather(year, percentage, -Age_group, -country, na.rm=TRUE) %>% # odstranimo manjkajoče vrednosti
   mutate(year=parse_number(year), # leta pretvorimo v števila
          Age_group=parse_number(Age_group) %>% # uvedemo urejen faktor za skupine
            factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65+"),
                   ordered=TRUE))
+
+StarostneStruktureCelota <- StarostneStrukture_podatki %>%
+  gather(year, number, "1980":"2015") %>% 
+  mutate(year=parse_number(year), 
+         Age_group=parse_number(Age_group) %>%
+           factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
+
+
+
+
+#BDPJI
 
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
 stran <- read_html(url)
@@ -42,7 +59,7 @@ bdp_dvajseta <- stran %>%
   mutate(year=parse_number(year),
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
-bdpji <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
+bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
 bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
 
 
