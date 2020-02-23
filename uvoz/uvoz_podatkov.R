@@ -24,6 +24,17 @@ StarostneStruktureCelota <- StarostneStrukture_podatki %>%
            factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
 
 
+poLetih_014 <- StarostneStruktureCelota %>% filter(Age_group == "0-14") %>% group_by(year) %>%
+  summarise(number = sum(number, na.rm = TRUE))
+
+poLetih_1564 <- StarostneStruktureCelota %>% filter(Age_group == "15-64") %>% 
+  group_by(year) %>% summarise(number = sum(number, na.rm = TRUE))
+
+poLetih_65 <- StarostneStruktureCelota %>% filter(Age_group == "65+") %>% group_by(year) %>%
+  summarise(number = sum(number, na.rm = TRUE))
+
+
+
 
 
 #BDPJI
@@ -80,5 +91,11 @@ colnames(populacija) <- c("country", leta)
 
 populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
   mutate(year=parse_number(year))
+celotnaPopulacija <- populacija %>% group_by(year) %>%
+  summarise(number = sum(population, na.rm = TRUE))
+
+
 populacija$country <- standardize.countrynames(populacija$country, suggest = "auto", print.changes = FALSE)
+
+
 
