@@ -93,9 +93,9 @@ populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
   mutate(year=parse_number(year))
 celotnaPopulacija <- populacija %>% group_by(year) %>%
   summarise(number = sum(population, na.rm = TRUE))
-
-
 populacija$country <- standardize.countrynames(populacija$country, suggest = "auto", print.changes = FALSE)
 
-
+vsote <- inner_join(celotnaPopulacija, poLetih_014, by="year") %>% inner_join(poLetih_1564, by="year") %>%
+  inner_join(poLetih_65, by="year")
+colnames(vsote) <- c("year","total world population", "0-14 total", "15-64 total", "65+ total")
 
