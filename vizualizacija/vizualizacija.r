@@ -22,11 +22,8 @@ procenti_poLetih <- vsote %>% mutate(procent_014 = 100 * prva/total, procent_156
   mutate(group = parse_number(group) %>% 
            factor(levels=c(14,1564,65), labels = c("0-14","15-64","65+"), ordered=TRUE))
 
-
-
-procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year, y=procent, color=group))+
-   geom_line()
-
+procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=procent, color=group)) + 
+  geom_col(position=position_dodge2(preserve = "total"), fill = 'white') 
 
 print(procenti_poLetih_graf)
 
