@@ -7,17 +7,31 @@ starostne_strukture1564 <- StarostneStrukture_janos %>% filter(Age_group=="15-64
 starostneStruture1564_graf <- ggplot(starostne_strukture1564, aes(x=percentage)) + 
   geom_histogram(binwidth = 0.7) + facet_wrap(~year)
 
-
-
-
-
-#print(starostneStruture1564_graf)
-
 starostne_strukture65 <- StarostneStrukture_janos %>% filter(Age_group=="65+") %>% filter(year>= "1980")
 starostneStruture65_graf <- ggplot(starostne_strukture65, aes(percentage)) + #stat_mean_line() + 
   geom_histogram(binwidth = 0.7) + facet_wrap(~year)
 
-print(starostneStruture65_graf)
+#print(starostneStruture65_graf)
+
+
+
+procenti_poLetih <- vsote %>% mutate(procent_014 = 100 * prva/total, procent_1564 = 100 * druga/total,
+                                     procent_65 = 100 * tretja/total) %>%
+  select(-"total", -"prva", -"druga", -"tretja") %>% 
+  gather(group, procent, procent_014, procent_1564, procent_65, -year) %>% arrange(year) %>%
+  mutate(group = parse_number(group) %>% 
+           factor(levels=c(14,1564,65), labels = c("0-14","15-64","65+"), ordered=TRUE))
+
+
+
+procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year, y=procent, color=group))+
+   geom_line()
+
+
+print(procenti_poLetih_graf)
+
+
+
 
 #BDP ppp IN STAROSTNE STRUKTURE GRAFI
 
