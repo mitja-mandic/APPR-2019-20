@@ -24,13 +24,16 @@ StarostneStruktureCelota <- StarostneStrukture_podatki %>%
            factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
 
 
-poLetih_014 <- StarostneStruktureCelota %>% filter(Age_group == "0-14") %>% group_by(year) %>%
+poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+  select(-"gdp") %>% filter(Age_group == "0-14") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_1564 <- StarostneStruktureCelota %>% filter(Age_group == "15-64") %>% 
+poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+  select(-"gdp") %>% filter(Age_group == "15-64") %>% 
   group_by(year) %>% summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_65 <- StarostneStruktureCelota %>% filter(Age_group == "65+") %>% group_by(year) %>%
+poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+  select(-"gdp") %>% filter(Age_group == "65+") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
 
@@ -91,9 +94,13 @@ colnames(populacija) <- c("country", leta)
 
 populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
   mutate(year=parse_number(year))
-celotnaPopulacija <- populacija %>% group_by(year) %>%
-  summarise(number = sum(population, na.rm = TRUE))
+
+
 populacija$country <- standardize.countrynames(populacija$country, suggest = "auto", print.changes = FALSE)
+
+celotnaPopulacija <- inner_join(bdpji, populacija, by=c("country", "year")) %>%
+  select(-"gdp") %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE))
+ 
 
 vsote <- inner_join(celotnaPopulacija, poLetih_014, by="year") %>% inner_join(poLetih_1564, by="year") %>%
   inner_join(poLetih_65, by="year")
