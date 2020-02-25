@@ -76,11 +76,28 @@ bdp_dvajseta <- stran %>%
 bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
 bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
 
+#RELIGIJE
 
 religije <- read.csv("podatki/religije.csv", na=c("5000")) %>%
-  rename(country = name) %>%
-  select(-"pop2019")
+  rename(country = name)
 religije$country <- standardize.countrynames(religije$country, suggest = "auto", print.changes = FALSE)
+
+religije_procenti <- religije %>% mutate(pop2019 = 1000*pop2019, christians = 100 * chistians/pop2019,
+                                    muslims = 100 * muslims/pop2019, unaffiliated = 100 * unaffiliated/pop2019,
+                                    hindus = 100 * hindus/pop2019, buddhists = buddhists * 100 / pop2019,
+                                    folkReligions = folkReligions * 100/pop2019,
+                                    jews = 100 * jews/pop2019, other = 100 * other / pop2019) %>%
+  select(-pop2019, -chistians)
+
+religije_tidy <- religije_procenti %>% gather(religion, percentage, muslims, christians, buddhists, hindus, 
+                                              jews, unaffiliated, folkReligions, other, -country) %>% 
+  arrange(by = country)
+
+
+
+
+
+
 
 
 svet <- uvozi.zemljevid(
