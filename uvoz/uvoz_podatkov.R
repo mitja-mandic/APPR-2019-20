@@ -2,14 +2,11 @@ source("lib/libraries.r", encoding="UTF-8")
 leta <- seq(1960, 2015, by=5)
 leta2 <- seq(1980, 2015, by=5)
 
-
+#probs irelevantno
 StarostneStrukture_delezPrebivalstva_podatki <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
 colnames(StarostneStrukture_delezPrebivalstva_podatki) <- c("Age_group", "country", leta)
 
-StarostneStruktureCelota_podatki <- read_csv("podatki/starostneStrukture.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
-colnames(StarostneStruktureCelota_podatki) <- c("Age_group", "country", leta2)
-
-
+#ne uporabim, delam s surovimi podatki
 StarostneStruktureProcent_janos <- StarostneStrukture_delezPrebivalstva_podatki %>%
   gather(year, percentage, -Age_group, -country, na.rm=TRUE) %>% # odstranimo manjkajoče vrednosti
   mutate(year=parse_number(year), # leta pretvorimo v števila
@@ -17,11 +14,17 @@ StarostneStruktureProcent_janos <- StarostneStrukture_delezPrebivalstva_podatki 
            factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65+"),
                   ordered=TRUE))
 
+StarostneStruktureCelota_podatki <- read_csv("podatki/starostneStrukture.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
+colnames(StarostneStruktureCelota_podatki) <- c("Age_group", "country", leta2)
+
 StarostneStruktureCelota <- StarostneStrukture_podatki %>%
-  gather(year, number, "1980":"2015") %>% 
+  gather(year, number, "1980":"2015", na.rm = TRUE) %>% 
    mutate(year=parse_number(year), 
           Age_group=parse_number(Age_group) %>%
             factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
+StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by = c("country", "year")) %>%
+  mutate(percentage = 100 * number/population) %>% select(-"population",-"number") 
+
 
 
 poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
@@ -35,10 +38,6 @@ poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "yea
 poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "65+") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
-
-
-
-
 
 #BDPJI
 
@@ -74,7 +73,7 @@ bdp_dvajseta <- stran %>%
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
 bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
-bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
+bdpji_ppp$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
 
 #RELIGIJE
 
@@ -89,21 +88,10 @@ religije_procenti <- religije %>% mutate(pop2019 = 1000*pop2019, christians = 10
                                     jews = 100 * jews/pop2019, other = 100 * other / pop2019) %>%
   select(-pop2019, -chistians)
 
-religije_tidy <- religije_procenti %>% gather(religion, percentage, muslims, christians, buddhists, hindus, 
-                                              jews, unaffiliated, folkReligions, other, -country) %>% 
+religion_tidy <- religije_procenti %>% gather(religion, percentage, "muslims":"christians", -country, na.rm = TRUE) %>% 
   arrange(by = country)
 
-
-
-
-
-
-
-
-svet <- uvozi.zemljevid(
-  "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
-  "ne_50m_admin_0_countries", encoding="UTF-8")
-svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
+#CELOTE
 
 populacija <- read.csv("podatki/populacija.csv", na = ("..")) %>%
   select(-"ï..Series.Name",-"Series.Code",-"Country.Code") 
@@ -118,7 +106,12 @@ populacija$country <- standardize.countrynames(populacija$country, suggest = "au
 celotnaPopulacija <- inner_join(bdpji, populacija, by=c("country", "year")) %>%
   select(-"gdp") %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE))
  
-
 vsote <- inner_join(celotnaPopulacija, poLetih_014, by="year") %>% inner_join(poLetih_1564, by="year") %>%
   inner_join(poLetih_65, by="year")
 colnames(vsote) <- c("year","total", "prva", "druga", "tretja")
+
+#ZA ZEMLJEVIDE
+svet <- uvozi.zemljevid(
+  "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
+  "ne_50m_admin_0_countries", encoding="UTF-8")
+svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
