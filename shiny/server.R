@@ -5,7 +5,7 @@ shinyServer(function(input, output) {
     druzine %>% spread(key="velikost.druzine", value="stevilo.druzin") %>%
       rename(`Občina`=obcina)
   })
-  
+
   output$pokrajine <- renderUI(
     selectInput("pokrajina", label="Izberi pokrajino",
                 choices=c("Vse", levels(obcine$pokrajina)))
