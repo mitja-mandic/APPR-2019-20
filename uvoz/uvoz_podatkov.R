@@ -22,20 +22,18 @@ StarostneStruktureCelota <- StarostneStrukture_podatki %>%
    mutate(year=parse_number(year), 
           Age_group=parse_number(Age_group) %>%
             factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
-StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by = c("country", "year")) %>%
-  mutate(percentage = 100 * number/population) %>% select(-"population",-"number") 
 
 
 
-poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "0-14") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "15-64") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
+poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "65+") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
@@ -73,7 +71,7 @@ bdp_dvajseta <- stran %>%
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
 bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
-bdpji_ppp$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
+bdpji_ppp$country <- standardize.countrynames(bdpji_ppp$country, suggest = "auto", print.changes = FALSE)
 
 #RELIGIJE
 
@@ -88,8 +86,9 @@ religije_procenti <- religije %>% mutate(pop2019 = 1000*pop2019, christians = 10
                                     jews = 100 * jews/pop2019, other = 100 * other / pop2019) %>%
   select(-pop2019, -chistians)
 
-religion_tidy <- religije_procenti %>% gather(religion, percentage, "muslims":"christians", -country, na.rm = TRUE) %>% 
-  arrange(by = country)
+religion_tidy <- religije_procenti %>% 
+  gather(religion, percentage, "muslims":"christians",-country, na.rm = TRUE) %>%
+  mutate(religion = religion %>% factor()) %>% arrange(by = country) 
 
 #CELOTE
 
@@ -110,8 +109,15 @@ vsote <- inner_join(celotnaPopulacija, poLetih_014, by="year") %>% inner_join(po
   inner_join(poLetih_65, by="year")
 colnames(vsote) <- c("year","total", "prva", "druga", "tretja")
 
+StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by = c("country", "year")) %>%
+  mutate(percentage = 100 * number/population) %>% select(-"population",-"number") 
+
+
 #ZA ZEMLJEVIDE
 svet <- uvozi.zemljevid(
   "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
   "ne_50m_admin_0_countries", encoding="UTF-8")
 svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
+
+
+
