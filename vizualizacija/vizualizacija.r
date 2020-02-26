@@ -28,8 +28,6 @@ procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color
 
 
 
-
-
 #print(procenti_poLetih_graf)
 
 
@@ -47,7 +45,7 @@ print(bdp_starostne014_graf)
 #               summarise(povp = mean(percentage)))
 
 
-bdp_starostneStrukture65 <- inner_join(bdpji, StarostneStrukture_janos, by = c("year", "country")) %>% 
+bdp_starostneStrukture65 <- inner_join(bdpji_ppp, StarostneStrukture_janos, by = c("year", "country")) %>% 
   filter(Age_group == "65+")
 bdp_starostne65_graf <- ggplot(bdp_starostneStrukture65, aes(x=gdp, y=percentage)) +
   geom_point() + scale_x_log10() + facet_wrap(~year)
@@ -57,21 +55,39 @@ bdp_starostne65_graf <- ggplot(bdp_starostneStrukture65, aes(x=gdp, y=percentage
 #RELIGIJE IN STAROSTNE STRUKTURE
 
 krscanske <- religion_tidy %>% filter(religion == "christians") %>% filter(percentage >= 70, percentage <= 100)
+
 krscanske_starostneStrukture <- inner_join(StarostneStruktureProcent, krscanske, by = "country") %>% 
-   mutate(percentage = percentage.x) %>% select(-"percentage.y", -"religion", -"percentage.x")
-
-krscanske_starostneStrukture_graf <- ggplot(krscanske_starostneStrukture, aes(x=percentage)) +
-  geom_histogram() + facet_grid(year~Age_group)
-print(krscanske_starostneStrukture_graf)
-
+   mutate(percentage = percentage.x) %>% select(-"percentage.y", -"percentage.x")
 
 
 muslimanske <- religion_tidy %>% filter(religion == "muslims") %>% filter(percentage >= 70, percentage <= 100) 
+muslimanske_starostneStrukture <- inner_join(StarostneStruktureProcent, muslimanske, by = "country") %>% 
+  mutate(percentage = percentage.x) %>% select(-"percentage.y", -"percentage.x")
+
+
+starostne_poVeri <- rbind(krscanske_starostneStrukture, muslimanske_starostneStrukture) %>%
+  arrange(by = country)
+
+starostne_poVeri_mean <- starostne_poVeri %>% 
+  group_by(Age_group, religion) %>% summarise(mean = mean(percentage))
+
+starostne_poVeri_graf <- ggplot(starostne_poVeri, aes(x=country, y = percentage, color = religion)) + 
+  geom_point() + facet_grid(year~Age_group) + 
+  geom_hline(data = starostne_poVeri_mean, aes(yintercept = mean, color = religion), size=1.3)
+
+print(starostne_poVeri_graf)
+
 budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(percentage >= 70) 
 
 
 
+krscanske_starostneStrukture_graf <- ggplot(krscanske_starostneStrukture, aes(x=percentage)) +
+  geom_histogram() + facet_grid(year~Age_group)
+#print(krscanske_starostneStrukture_graf)
+
+
 #ZEMLJEVIDI
+
 
 #zemljevid014 <- tm_shape(merge(svet, starostne_strukture014, by.x = "NAME", by.y = "country")) + 
 #  tm_polygons("percentage", midpoint = 0.2)
