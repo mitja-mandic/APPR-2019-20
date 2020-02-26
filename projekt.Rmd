@@ -1,13 +1,13 @@
 ---
-title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Janoš Vidali"
+title: "Starostne strukture po svetu"
+author: "Mitja Mandić"
 output:
   html_document: default
   pdf_document:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-runtime: shiny
+#runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -24,87 +24,55 @@ source("lib/libraries.r", encoding="UTF-8")
 source("lib/rstudio.r", encoding="UTF-8")
 ```
 
-# Izbira teme
+# O temi
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Spreminjanje starostne strukture prebivalstva je zanje čase izjemno aktualna tema. V poročilu je predstavljeno nekaj podatkov o starostni sestavi držav po svetu. Vse države niso vključene, saj enostavno ni zbranih podatkov, pri temu pa gre za manjšino držav. Podatki pokrivajo leta med 1980 in 2015 na 5 let, saj se starostne strukture v roku enega leta ne spreminjajo bistveno.
 
-![](slike/grb.png)
-
-***
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz, echo=FALSE, message=FALSE}
-source("uvoz/uvoz.r", encoding="UTF-8")
+```{r uvoz, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+source("uvoz/uvoz_podatkov.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Uvozili smo podatke o starostnih strukturah, populaciji in veroizpovedi v formatu CSV ter podatke o preteklih BDP-jih iz HTML tabel iz Wikipedie. Viri so natančno navedeni v "README.md".  
+Podatke imamo v tabelah v obliki *tidy data*:
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+1. `StarostneStruktureCelota` - podatki starostni strukturi v državi
+  - `Age_group` - spremenljivka: starostna skupina (urejen faktor),
+  - `country` - spremenljivka: ime države (besedilo)
+  - `year` - spremenljivka: leto, v katerem je bila popisana starostna struktura (število)
+  - `number` - meritev: število pripadnikov starostne skupine
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+2. `religije` - podatki o verski strukturi posameznih držav
+  - `country` - spremenljivka: ime države (besedilo),
+  - `christians` - meritev: število kristjanov v državi (število),
+  - `muslims` - meritev: število muslimanov v državi (število),
+  - `unaffiliated` - meritev: število nevernikov (ateistov) v državi (število),
+  - `hindus` - meritev: število hinduistov v državi (število),
+  - `buddhists` - meritev: število budistov v državi (število),
+  - `folkReligions` - meritev: število pripadikov neki lokalni veri v državi (število),
+  - `other` - meritev: število pripadnikov drugim religijam v državi (število),
+  - `jews` - meritev: število judov v državi (število).
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
 
-***
+
 
 # Analiza in vizualizacija podatkov
 
 ```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
+procenti_poLetih_graf
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obcina")),
-                        aes(x=long, y=lat, group=group, fill=povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill=guide_colorbar(title="Povprečje"))
-```
 
-***
 
 # Napredna analiza podatkov
 
 ```{r analiza, echo=FALSE, message=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-```
 
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
-
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
-```
-
-***
-
-```{r shiny, echo=FALSE}
-shinyAppDir("shiny", options=list(width="100%", height=600))
 ```
