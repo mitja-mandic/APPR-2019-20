@@ -102,7 +102,7 @@ populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
 
 populacija$country <- standardize.countrynames(populacija$country, suggest = "auto", print.changes = FALSE)
 
-celotnaPopulacija <- inner_join(bdpji, populacija, by=c("country", "year")) %>%
+celotnaPopulacija <- inner_join(bdpji_ppp, populacija, by=c("country", "year")) %>%
   select(-"gdp") %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE))
  
 vsote <- inner_join(celotnaPopulacija, poLetih_014, by="year") %>% inner_join(poLetih_1564, by="year") %>%
