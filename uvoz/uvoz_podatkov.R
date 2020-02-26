@@ -1,27 +1,65 @@
 source("lib/libraries.r", encoding="UTF-8")
 leta <- seq(1960, 2015, by=5)
 leta2 <- seq(1980, 2015, by=5)
-
-#probs irelevantno
-StarostneStrukture_delezPrebivalstva_podatki <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
-colnames(StarostneStrukture_delezPrebivalstva_podatki) <- c("Age_group", "country", leta)
-
-#ne uporabim, delam s surovimi podatki
-StarostneStruktureProcent_janos <- StarostneStrukture_delezPrebivalstva_podatki %>%
-  gather(year, percentage, -Age_group, -country, na.rm=TRUE) %>% # odstranimo manjkajoče vrednosti
-  mutate(year=parse_number(year), # leta pretvorimo v števila
-         Age_group=parse_number(Age_group) %>% # uvedemo urejen faktor za skupine
-           factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65+"),
-                  ordered=TRUE))
+# 
+# #probs irelevantno
+# StarostneStrukture_delezPrebivalstva_podatki <- read_csv("podatki/podatki.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
+# colnames(StarostneStrukture_delezPrebivalstva_podatki) <- c("Age_group", "country", leta)
+# 
+# #ne uporabim, delam s surovimi podatki
+# StarostneStruktureProcent_janos <- StarostneStrukture_delezPrebivalstva_podatki %>%
+#   gather(year, percentage, -Age_group, -country, na.rm=TRUE) %>% # odstranimo manjkajoče vrednosti
+#   mutate(year=parse_number(year), # leta pretvorimo v števila
+#          Age_group=parse_number(Age_group) %>% # uvedemo urejen faktor za skupine
+#            factor(levels=c(0, 15, 65), labels=c("0-14", "15-64", "65+"),
+#                   ordered=TRUE))
 
 StarostneStruktureCelota_podatki <- read_csv("podatki/starostneStrukture.csv", na = ("..")) %>% select(-'Series Code', -'Country Code')
 colnames(StarostneStruktureCelota_podatki) <- c("Age_group", "country", leta2)
 
-StarostneStruktureCelota <- StarostneStrukture_podatki %>%
+StarostneStruktureCelota <- StarostneStruktureCelota_podatki %>%
   gather(year, number, "1980":"2015", na.rm = TRUE) %>% 
    mutate(year=parse_number(year), 
           Age_group=parse_number(Age_group) %>%
             factor(levels=c(0,15,65), labels=c("0-14", "15-64", "65+"), ordered=TRUE))
+
+
+#BDPJI
+
+url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
+stran <- read_html(url)
+
+bdp_osemdeseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[1]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country, na.rm = TRUE) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+bdp_devetdeseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[2]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country, na.rm = TRUE) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+bdp_deseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[3]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country, na.rm = TRUE) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+bdp_dvajseta <- stran %>% 
+  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[4]] %>%
+  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
+  gather(year, gdp, -country, na.rm = TRUE) %>%
+  mutate(year=parse_number(year),
+         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
+
+bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
+bdpji_ppp$country <- standardize.countrynames(bdpji_ppp$country, suggest = "auto", print.changes = FALSE)
+
 
 
 
@@ -36,42 +74,6 @@ poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", 
 poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "65+") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
-
-#BDPJI
-
-url <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_projected_GDP_(PPP)"
-stran <- read_html(url)
-
-bdp_osemdeseta <- stran %>% 
-  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[1]] %>%
-  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
-  gather(year, gdp, -country) %>%
-  mutate(year=parse_number(year),
-         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
-
-bdp_devetdeseta <- stran %>% 
-  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[2]] %>%
-  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
-  gather(year, gdp, -country) %>%
-  mutate(year=parse_number(year),
-         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
-
-bdp_deseta <- stran %>% 
-  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[3]] %>%
-  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
-  gather(year, gdp, -country) %>%
-  mutate(year=parse_number(year),
-         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
-
-bdp_dvajseta <- stran %>% 
-  html_nodes(xpath="//table[@class='sortable wikitable']") %>% .[[4]] %>%
-  html_table() %>% rename(country=`Country (or dependent territory)`) %>%
-  gather(year, gdp, -country) %>%
-  mutate(year=parse_number(year),
-         gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
-
-bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
-bdpji_ppp$country <- standardize.countrynames(bdpji_ppp$country, suggest = "auto", print.changes = FALSE)
 
 #RELIGIJE
 
