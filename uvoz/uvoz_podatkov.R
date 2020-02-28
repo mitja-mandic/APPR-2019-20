@@ -121,5 +121,12 @@ svet <- uvozi.zemljevid(
   "ne_50m_admin_0_countries", encoding="UTF-8")
 svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
 
+#HDI 
 
+hdi_podatki <- read_csv("podatki/hdi.csv", skip = 1, n_max = 189, na = c(".."))
 
+hdi <- hdi_podatki %>% 
+  select(-"HDI Rank (2018)") %>% gather(leto, HDI, "1990":"2018") %>%
+  mutate(year = parse_number(leto)) %>% select(-leto)
+hdi <- hdi[c(1,3,2)]
+         
