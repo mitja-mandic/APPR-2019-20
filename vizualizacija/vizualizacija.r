@@ -8,7 +8,7 @@ procenti_poLetih <- vsote %>% mutate(procent_014 = 100 * prva/total, procent_156
   mutate(percentage = procent,Age_group = parse_number(group) %>% 
            factor(levels=c(14,1564,65), labels = c("0-14","15-64","65+"), ordered=TRUE)) %>% select(-procent, -group)
 procenti_poLetih <- procenti_poLetih[c(1,3,2)]
-View(procenti_poLetih)
+
 
 procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color=Age_group)) + 
   geom_col(position=position_dodge2(preserve = "total"), fill = 'white') 
@@ -19,9 +19,13 @@ procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI
 
 bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country"))
+
 bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=gdp,y=percentage)) + geom_point() +
   facet_grid(year~Age_group) + scale_x_log10()
-print(bdp_starostneStrutkure_graf)
+
+
+
+#print(bdp_starostneStrutkure_graf)
 
 
 
