@@ -28,7 +28,6 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 Spreminjanje starostne strukture prebivalstva je zanje čase izjemno aktualna tema. V poročilu je predstavljeno nekaj podatkov o starostni sestavi držav po svetu. Vse države niso vključene, saj enostavno ni zbranih podatkov, pri temu pa gre za manjšino držav. Podatki pokrivajo leta med 1980 in 2015 na 5 let, saj se starostne strukture v roku enega leta ne spreminjajo bistveno.
 
-
 # Obdelava, uvoz in čiščenje podatkov
 
 ```{r uvoz, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
@@ -57,15 +56,19 @@ Podatke imamo v tabelah v obliki *tidy data*:
   - `jews` - meritev: število judov v državi (število).
 
 
+# Medianska starost
+
+Na spodnjem zemljevidu je prikazana medianska starost prebivalcev po svetu iz leta 2018 - starost, od katere je polovico prebivalstva mlajše, in polovico starejše. Najnižjo ima Niger, pri malo manj kot 15 letih, najvišjo pa Monako pri 53 letih. Slovenija je na lestvici precej visoko z mediansko starostjo 44.5 let. 
+```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+source("vizualizacija/vizualizacija.r", encoding="UTF-8")
+zemljevid_median
+```
+
+
 
 
 
 # Analiza in vizualizacija podatkov
-
-```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-source("vizualizacija/vizualizacija.r", encoding="UTF-8")
-procenti_poLetih_graf
-```
 
 
 
