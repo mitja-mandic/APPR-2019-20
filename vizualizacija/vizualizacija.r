@@ -11,21 +11,27 @@ procenti_poLetih <- procenti_poLetih[c(1,3,2)]
 
 
 procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color=Age_group)) + 
-  geom_col(position=position_dodge2(preserve = "total"), fill = 'white') 
+  geom_col(position=position_dodge2(preserve = "total"), fill = 'white')+
+  labs(x = "leto", y = "procent", color = "Skupina")
 
-
-
+poLetih <- ggplotly(procenti_poLetih_graf)
+#print(poLetih)
 
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI
 
+
+
 bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country"))
 
-bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=gdp,y=percentage)) + geom_point() +
-  facet_grid(year~Age_group) + scale_x_log10()
+bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=gdp, y=percentage)) + 
+  geom_point() + facet_grid(year~Age_group) + scale_x_log10()
+print(bdp_starostneStrutkure_graf)
 
 
+bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
-#print(bdp_starostneStrutkure_graf)
+print(bdp_starostne)
+
 
 
 
@@ -36,11 +42,9 @@ krscanske <- religion_tidy %>% filter(religion == "christians") %>% filter(perce
 krscanske_starostneStrukture <- inner_join(StarostneStruktureProcent, krscanske, by = "country") %>% 
    mutate(percentage = percentage.x) %>% select(-"percentage.y", -"percentage.x")
 
-
 muslimanske <- religion_tidy %>% filter(religion == "muslims") %>% filter(percentage >= 70, percentage <= 100) 
 muslimanske_starostneStrukture <- inner_join(StarostneStruktureProcent, muslimanske, by = "country") %>% 
   mutate(percentage = percentage.x) %>% select(-"percentage.y", -"percentage.x")
-
 
 starostne_poVeri <- rbind(krscanske_starostneStrukture, muslimanske_starostneStrukture) %>%
   arrange(by = country)
@@ -49,10 +53,13 @@ starostne_poVeri_mean <- starostne_poVeri %>%
   group_by(Age_group, religion) %>% summarise(mean = mean(percentage))
 
 starostne_poVeri_graf <- ggplot(starostne_poVeri, aes(x=country, y = percentage, color = religion)) + 
-  geom_point() + facet_grid(year~Age_group) + 
+  geom_col() + facet_grid(year~Age_group) + 
   geom_hline(data = starostne_poVeri_mean, aes(yintercept = mean, color = religion), size=1.3)
 
-print(starostne_poVeri_graf)
+
+
+
+#print(starostne_poVeri_graf)
 
 budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(percentage >= 70) 
 
