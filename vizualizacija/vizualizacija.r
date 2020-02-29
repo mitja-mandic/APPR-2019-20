@@ -56,14 +56,7 @@ starostne_poVeri_graf <- ggplot(starostne_poVeri, aes(x=country, y = percentage,
   geom_col() + facet_grid(year~Age_group) + 
   geom_hline(data = starostne_poVeri_mean, aes(yintercept = mean, color = religion), size=1.3)
 
-
-
-
-#print(starostne_poVeri_graf)
-
 budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(percentage >= 70) 
-
-
 
 krscanske_starostneStrukture_graf <- ggplot(krscanske_starostneStrukture, aes(x=percentage)) +
   geom_histogram() + facet_grid(year~Age_group)
