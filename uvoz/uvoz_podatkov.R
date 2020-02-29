@@ -129,4 +129,17 @@ hdi <- hdi_podatki %>%
   select(-"HDI Rank (2018)") %>% gather(leto, HDI, "1990":"2018") %>%
   mutate(year = parse_number(leto)) %>% select(-leto)
 hdi <- hdi[c(1,3,2)]
-         
+
+
+
+#MEDIANSKA STAROST
+
+link <- "https://en.wikipedia.org/wiki/List_of_countries_by_median_age"
+page <- read_html(link)
+
+median_age2018 <- page %>% 
+  html_nodes(xpath="//table[@class='wikitable sortable']") %>% .[[1]] %>%
+  html_table() %>% rename(country = "Country/Territory", median = "Median(Years)") %>%
+  select(-'Rank', -'Male(Years)', -"Female (Years)")
+
+
