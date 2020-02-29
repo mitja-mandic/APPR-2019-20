@@ -19,19 +19,22 @@ poLetih <- ggplotly(procenti_poLetih_graf)
 
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI
 
+bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country")) %>% 
+  arrange(gdp, Age_group)
 
+bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=country)) + geom_bar() +
+  geom_bar(data = bdp_starostneStrutkure %>% arrange(gdp)) + facet_grid(year~Age_group) + 
+  theme(axis.text.x = element_blank(), axis.text.y = element_blank())
 
-bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country"))
-
-bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=gdp, y=percentage)) + 
-  geom_point() + facet_grid(year~Age_group) + scale_x_log10()
 print(bdp_starostneStrutkure_graf)
+
+
+#print(bdp_starostneStrutkure_graf)
 
 
 bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
 print(bdp_starostne)
-
 
 
 
@@ -60,18 +63,15 @@ budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(perce
 
 krscanske_starostneStrukture_graf <- ggplot(krscanske_starostneStrukture, aes(x=percentage)) +
   geom_histogram() + facet_grid(year~Age_group)
+
+
+
+
 #print(krscanske_starostneStrukture_graf)
 
 
 #ZEMLJEVIDI
 
+zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "country")) + 
+  tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE) + tm_layout(legend.outside = TRUE)
 
-#zemljevid014 <- tm_shape(merge(svet, starostne_strukture014, by.x = "NAME", by.y = "country")) + 
-#  tm_polygons("percentage", midpoint = 0.2)
-
-#print(zemljevid64)
-
-
-
-# zemljevid15_64 <- tm_shape(merge(svet, starost15_64, by.x = "NAME", by.y = "country")) + 
-# tm_polygons("percentage", midpoint = 0.2)
