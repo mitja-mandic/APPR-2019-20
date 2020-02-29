@@ -57,11 +57,9 @@ bdp_dvajseta <- stran %>%
   mutate(year=parse_number(year),
          gdp=parse_number(gdp, locale=locale(grouping_mark=",")))
 
-bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta) 
+bdpji_ppp <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta)
+bdpji_ppp$gdp <- bdpji_ppp$gdp * 1000000
 bdpji_ppp$country <- standardize.countrynames(bdpji_ppp$country, suggest = "auto", print.changes = FALSE)
-
-
-
 
 poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji_ppp, by=c("country", "year")) %>%
   select(-"gdp") %>% filter(Age_group == "0-14") %>% group_by(year) %>%
@@ -115,6 +113,13 @@ StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by
   mutate(percentage = 100 * number/population) %>% select(-"population",-"number") 
 
 
+bdpji <- inner_join(bdpji_ppp, populacija, by = c("country", "year")) %>% 
+  mutate(bdp_pc = gdp / population) %>% select(-population)
+
+
+
+
+
 #ZA ZEMLJEVIDE
 svet <- uvozi.zemljevid(
   "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
@@ -141,5 +146,5 @@ median_age2018 <- page %>%
   html_nodes(xpath="//table[@class='wikitable sortable']") %>% .[[1]] %>%
   html_table() %>% rename(country = "Country/Territory", median = "Median(Years)") %>%
   select(-'Rank', -'Male(Years)', -"Female (Years)")
-
+median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
 
