@@ -132,7 +132,7 @@ hdi_podatki <- read_csv("podatki/hdi.csv", skip = 1, n_max = 189, na = c(".."))
 
 hdi <- hdi_podatki %>% 
   select(-"HDI Rank (2018)") %>% gather(leto, HDI, "1990":"2018") %>%
-  mutate(year = parse_number(leto)) %>% select(-leto)
+  mutate(year = parse_number(leto)) %>% rename(country = Country) %>% select(-leto)
 hdi <- hdi[c(1,3,2)]
 
 

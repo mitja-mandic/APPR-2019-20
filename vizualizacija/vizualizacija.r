@@ -19,8 +19,11 @@ poLetih <- ggplotly(procenti_poLetih_graf)
 
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI
 
-bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country")) %>% 
-  arrange(gdp, Age_group)
+bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country"))
+bdp_starostneStrutkure <- left_join(bdp_starostneStrutkure, hdi, by = c("country", "year"))
+  
+
+
 
 bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure, aes(x=country)) + geom_bar() +
   geom_bar(data = bdp_starostneStrutkure %>% arrange(gdp)) + facet_grid(year~Age_group) + 
