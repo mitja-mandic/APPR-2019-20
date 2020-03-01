@@ -7,7 +7,7 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-#runtime: shiny
+runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -58,17 +58,29 @@ Podatke imamo v tabelah v obliki *tidy data*:
 
 # Medianska starost
 
-Na spodnjem zemljevidu je prikazana medianska starost prebivalcev po svetu iz leta 2018 - starost, od katere je polovico prebivalstva mlajše, in polovico starejše. Najnižjo ima Niger, pri malo manj kot 15 letih, najvišjo pa Monako pri 53 letih. Slovenija je na lestvici precej visoko z mediansko starostjo 44.5 let. 
-```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+Na spodnjem zemljevidu je prikazana medianska starost prebivalcev po svetu iz leta 2018 - starost, od katere je polovico prebivalstva mlajše, in polovico starejše. Najnižjo ima Niger, pri malo manj kot 15 letih, 
+najvišjo pa Monako pri 53 letih. Slovenija je na lestvici precej visoko z mediansko starostjo 44.5 let. 
+
+```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.align='center'}
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 zemljevid_median
 ```
 
+# Spreminjanje starostne sestave
 
+Svet se stara, sestava populacije se po svetu spreminja. Na grafu spodaj so predstavljeni deleži posameznih starostnih struktur v zadnjih 40 letih. Procenti se ponekod ne seštejejo v 100 - nekaj držav je podajalo samo podatke o številu prebivalcev, ne pa tudi o njihovih starostih.
 
+```{r poLetih,plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
+poLetih
+```
 
+# Starostne strukture in razvitost države
 
-# Analiza in vizualizacija podatkov
+V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP ter HDI - human development indeks. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in večjim procentom starejše populacije.
+
+```{r shiny, echo=FALSE}
+shinyAppDir("shiny")
+```
 
 
 
