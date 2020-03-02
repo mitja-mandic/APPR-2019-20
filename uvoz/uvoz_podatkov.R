@@ -88,7 +88,20 @@ religije_procenti <- religije %>% mutate(pop2019 = 1000*pop2019, christians = 10
 
 religion_tidy <- religije_procenti %>% 
   gather(religion, percentage, "muslims":"christians",-country, na.rm = TRUE) %>%
-  mutate(religion = religion %>% factor()) %>% arrange(by = country) 
+  mutate(religion = religion %>% factor()) %>% arrange(by = country)
+
+
+
+krscanske <- religion_tidy %>% filter(religion == "christians") %>% filter(percentage >= 60)
+muslimanske <- religion_tidy %>% filter(religion == "muslims") %>% filter(percentage >= 60)
+budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(percentage >= 60) 
+hindujske <- religion_tidy %>% filter(religion == "hindus") %>% filter(percentage >= 60)
+judovske <- religion_tidy %>% filter(religion == "jews") %>% filter(percentage >= 60)
+brezVere <- religion_tidy %>% filter(religion == "unaffiliated") %>% filter(percentage >= 60)
+
+prevladujoceVere <- rbind(krscanske, muslimanske, budisticne, hindujske, judovske, brezVere) %>% 
+  select(-percentage)
+
 
 #CELOTE
 
