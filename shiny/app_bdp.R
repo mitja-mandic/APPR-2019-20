@@ -9,7 +9,8 @@ ui <- fluidPage(
                             selected = "skupaj"),
                 selectInput(inputId = "podatek", 
                             label = "Parametri za graf",
-                            choices = c("BDP" = "gdp",
+                            choices = c("BDP PPP" = "gdp_ppp",
+                                        "BDP pc" = "bdp_pc",
                                         "HDI" = "HDI",
                                         "Populacija" = "population"),
                             br()),
@@ -19,7 +20,7 @@ ui <- fluidPage(
                                          "15-64",
                                          "65+")),
   ),
-  mainPanel(plotOutput("graf", height = "400px", width = "700px"))
+  mainPanel(plotOutput("graf", height = "400px", width = "600px"))
   )
 )
 
