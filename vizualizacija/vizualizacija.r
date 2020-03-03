@@ -16,7 +16,7 @@ poLetih <- ggplotly(procenti_poLetih_graf)
 
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI narejeno v shinyju 
 
-bdp_starostneStrutkure <- inner_join(bdpji_ppp, StarostneStruktureProcent, by=c("year", "country")) %>%
+bdp_starostneStrutkure <- inner_join(bdpji, StarostneStruktureProcent, by=c("year", "country")) %>%
   left_join(hdi, by = c("country", "year")) %>% left_join(populacija, by = c("year", "country"))
 
 bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure %>% filter(Age_group=="0-14"),
@@ -31,15 +31,6 @@ bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
 prevladujocaVera_starostne <- inner_join(prevladujoceVere, StarostneStruktureProcent, by = "country")
 povprecjaVere <- prevladujocaVera_starostne %>% group_by(Age_group, religion, year) %>% summarise(povp = mean(percentage))
-
-
-
-
-prevladujocaVera_starostne_graf <- ggplot(prevladujocaVera_starostne %>% arrange(religion, desc(percentage)),
-                                           aes(x = country, y = percentage, 
-                                          color = religion, fill = religion)) + 
-  geom_col(alpha = 0.5) +  facet_grid(year~Age_group)+ theme(axis.text.x = element_blank()) +
-  geom_hline(yintercept = povprecjaVere)
 
 
 povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = religion)) + geom_line() + 
@@ -57,9 +48,6 @@ relig_starostne_graf <- ggplot(relig_starostne %>% filter(Age_group == "0-14", r
   geom_col() + geom_col(data = relig_starostne %>%filter(Age_group == "0-14",religion == "muslims"),
                         position = position_dodge(preserve = "single")) + facet_wrap(year~.)
   
-
-print(relig_starostne_graf)
-
 
 #ZEMLJEVIDI
 
