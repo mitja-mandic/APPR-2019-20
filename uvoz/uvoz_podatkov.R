@@ -162,3 +162,16 @@ median_age2018 <- page %>%
   select(-'Rank', -'Male(Years)', -"Female (Years)")
 median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
 
+#IZOBRAZBA
+
+enrollmentRatios_podatki <- read.csv("podatki/enrollmentRatiosGross.csv", na = (".."))  %>% select(-'Series.Code', -'Country.Code')
+colnames(enrollmentRatios_podatki) <- c("series", "country", leta2)
+
+enrollmentRatios <- enrollmentRatios_podatki %>% gather(year, percentage, "1980":"2015") %>% 
+  mutate(series = factor(series, labels = c("","","","primary", "secondary","tertiary")), year = parse_number(year))
+enrollmentRatios <- inner_join(bdpji, enrollmentRatios, by = c("country","year")) %>% select(-"gdp_ppp",-"bdp_pc")
+
+
+
+
+
