@@ -29,15 +29,17 @@ bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
 #RELIGIJE IN STAROSTNE STRUKTURE
 
+religion_unique <- religion_tidy %>% distinct(country, .keep_all = TRUE)
+
 prevladujocaVera_starostne <- inner_join(prevladujoceVere, StarostneStruktureProcent, by = "country") %>%
   rename(percentageReligion = percentage.x, percentage = percentage.y)
 
 
-relig_starostne <- inner_join(relig_poskus, StarostneStruktureProcent, by = "country") %>% 
+relig_starostne <- inner_join(religion_unique, StarostneStruktureProcent, by = "country") %>% 
   rename(percentageReligion = percentage.x, percentage = percentage.y) %>% filter(percentageReligion >= 5)
 
 
-povprecjaVere <- prevladujocaVera_starostne %>% group_by(Age_group, religion, year) %>% 
+povprecjaVere <-religion_unique %>% group_by(Age_group, religion, year) %>% 
   summarise(povp = mean(percentage))
 
 

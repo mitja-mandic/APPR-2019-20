@@ -95,9 +95,6 @@ religion_tidy <- religije_procenti %>%
 
 
 
-
-
-
 krscanske <- religion_tidy %>% filter(religion == "christians") %>% filter(percentage >= 60)
 muslimanske <- religion_tidy %>% filter(religion == "muslims") %>% filter(percentage >= 60)
 budisticne <- religion_tidy %>% filter(religion == "buddhists") %>% filter(percentage >= 60) 
