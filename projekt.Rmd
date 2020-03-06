@@ -82,6 +82,9 @@ V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z
 shinyAppDir("shiny")
 ```
 
+# Starostne strukture in religija
+
+Zanimalo nas je, če obstaja povezava med večinsko veroizpovedjo v državi in spreminjanjem starostne sestave njenega prebivalstva. Kot večinsko veroizpoved v državi smo  Rezlultati so zanimivi, ampak pričakovani - muslimani imajo največ otrok. To lahko konkretno vidimo v primeru Severne Makedonije, kjer albanski muslimani predstavljajo vedno večji delež prebivalstva.
 
 
 
