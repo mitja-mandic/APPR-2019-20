@@ -37,7 +37,7 @@ relig_starostne <- inner_join(relig_poskus, StarostneStruktureProcent, by = "cou
   rename(percentageReligion = percentage.x, percentage = percentage.y) %>% filter(percentageReligion >= 5)
 
 
-povprecjaVere <- relig_starostne %>% group_by(Age_group, religion, year) %>% 
+povprecjaVere <- prevladujocaVera_starostne %>% group_by(Age_group, religion, year) %>% 
   summarise(povp = mean(percentage))
 
 
@@ -45,7 +45,6 @@ povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = relig
   facet_wrap(Age_group~.)
 
 povpReligije <- ggplotly(povpReligije_graf)
-print(povpReligije)
 
 
 # 
