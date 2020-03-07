@@ -155,8 +155,10 @@ colnames(enrollmentRatios_podatki) <- c("series", "country", leta2)
 enrollmentRatios <- enrollmentRatios_podatki %>% gather(year, percentage, "1980":"2015") %>% 
   mutate(series = factor(series, labels = c("","","","primary", "secondary","tertiary")), year = parse_number(year))
 enrollmentRatios <- inner_join(bdpji, enrollmentRatios, by = c("country","year")) %>% select(-"gdp_ppp",-"bdp_pc")
+enrollmentRatios <- enrollmentRatios[c(3,1,2,4)] %>% arrange(series)
 
-
+izo_starostne <- inner_join(enrollmentRatios, StarostneStruktureProcent ,by = c("country", "year")) %>%
+  rename(percentageIzo = percentage.x, percentage = percentage.y)
 
 
 
