@@ -28,18 +28,17 @@ bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
 
 #RELIGIJE IN STAROSTNE STRUKTURE
+religion_tidy <- religije_procenti %>% 
+  gather(religion, percentage, "muslims":"christians",-country, na.rm = TRUE) %>%
+  mutate(religion = religion %>% factor(ordered = TRUE)) %>% arrange(country, desc(percentage))
 
 religion_unique <- religion_tidy %>% distinct(country, .keep_all = TRUE)
 
-prevladujocaVera_starostne <- inner_join(prevladujoceVere, StarostneStruktureProcent, by = "country") %>%
+relig_starostne <- inner_join(religion_unique, StarostneStruktureProcent, by = "country") %>% 
   rename(percentageReligion = percentage.x, percentage = percentage.y)
 
 
-relig_starostne <- inner_join(religion_unique, StarostneStruktureProcent, by = "country") %>% 
-  rename(percentageReligion = percentage.x, percentage = percentage.y) %>% filter(percentageReligion >= 5)
-
-
-povprecjaVere <-religion_unique %>% group_by(Age_group, religion, year) %>% 
+povprecjaVere <-relig_starostne %>% group_by(Age_group, religion, year) %>% 
   summarise(povp = mean(percentage))
 
 
@@ -47,18 +46,6 @@ povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = relig
   facet_wrap(Age_group~.)
 
 povpReligije <- ggplotly(povpReligije_graf)
-
-
-# 
-# relig_poskus <- religion_tidy %>% arrange(religion, desc(percentage))
-# 
-# 
-# graf_religije <- ggplot(relig_starostne %>% arrange(desc(percentageReligion)), aes(x = country, y = percentage, fill = religion)) + 
-#   geom_col() + facet_grid(Age_group~year)
-# 
-# print(graf_religije)
-# 
-
 
 #ZEMLJEVIDI
 
