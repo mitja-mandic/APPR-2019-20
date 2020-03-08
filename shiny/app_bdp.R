@@ -39,14 +39,20 @@ tabPanel("Izobrazba",
                                     selected = "skupaj"),
                         selectInput(inputId = "izo",
                                     label = "Stopnja izobrazbe",
-                                    choices = c("Primarna" = "primary",
-                                                "Sekundarna" = "secondary",
-                                                "Terciarna" = "tertiary")),
+                                    choices = c("Primarna izobrazba" = "primary",
+                                                "Sekundarna izobrazba" = "secondary",
+                                                "Terciarna izobrazba" = "tertiary")),
                         radioButtons(inputId = "skupina2",
                                      label = "Starostna skupina",
                                      choices = c("0-14",
                                                  "15-64",
-                                                 "65+"))),
+                                                 "65+")),
+                        selectInput(inputId = "smooth2",
+                                    label = "Prileganje",
+                                    choices = c("brez",
+                                                "Linearno prileganje" = "lm",
+                                                "GLM" = "glm",
+                                                "LOESS" = "loess"), selected = "brez")),
                         mainPanel(plotOutput("grafIZO")),
       )
     )
@@ -73,11 +79,12 @@ server <- function(input, output) {
   z <- reactive({
     if(input$leto2 != "skupaj"){
       grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, year == input$leto2, series == input$izo)
-      ggplot(grafIzo, aes(x = percentageIzo, y = percentage, color)) + geom_point()
+      ggplot(grafIzo, aes(x = percentageIzo, y = percentage)) + geom_point() + geom_smooth(method = input$smooth2, fullrange = FALSE)
     }
     else{
       grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, series == input$izo)
-      ggplot(grafIzo, aes(x = percentageIzo, y = percentage)) + geom_point()
+      ggplot(grafIzo, aes(x = percentageIzo, y = percentage, color = factor(year))) + geom_point() + 
+      geom_smooth(method = input$smooth2, fullrange = FALSE, se = FALSE)
     }
   })
   output$grafBDP <- renderPlot(y())
