@@ -1,11 +1,13 @@
-poskus <- bdp_starostneStrutkure %>% filter(Age_group == "0-14") %>% select(-gdp_ppp,-HDI, population) %>%
-  na.omit()
+procent_014 <- procenti_poLetih %>% filter(Age_group == "0-14")
+napoved_014 <- data.frame(year = seq(1980,2025,5))
 
-model <- lm(bdp_pc ~ percentage, data = poskus)
+model014_lm <- lm(data = procent_014, percentage~year)
 
-bdp_ss_predict <- predict(model, interval = "confidence")
-podatki <- cbind(poskus, bdp_ss_predict)
+napoved_014$percentageLm <- predict(model014_lm, napoved_014)
 
-bdp_starostne_graf <- ggplot(podatki, aes(x = bdp_pc, y = percentage)) + facet_wrap(year~.) + geom_point() + 
-  geom_smooth(method = loess,  fullrange = FALSE, col = "blue")  + scale_x_log10()
 
+
+
+model014_loess <- loess(data = procent_014, percentage~year)
+
+napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
