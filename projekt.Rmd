@@ -76,7 +76,7 @@ poLetih
 
 # Starostne strukture in razvitost države
 
-V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP ter HDI - human development indeks. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in večjim procentom starejše populacije.
+V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP in BDP-jem na prebivalca, ter HDI - *human development index*. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in višjim procentom starejše populacije.
 
 ```{r shiny, echo=FALSE}
 shinyAppDir("shiny")
