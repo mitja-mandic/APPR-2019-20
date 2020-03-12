@@ -29,13 +29,32 @@ graf_1564_napoved <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_
 
 
 #CLUSTERING
+podatki_014_1980 <- StarostneStruktureProcent %>% filter(Age_group == "0-14", year == 1980)
 
-podatki_014 <- StarostneStruktureProcent %>% filter(Age_group == "0-14", year == 2000) %>% select(-Age_group)
+cluster_014_1980 <- kmeans(podatki_014_1980$percentage, 5)
 
-cluster_014 <- kmeans(podatki_014$percentage, 5)
-centri <- sort(cluster_014$centers)
-tabela <- data.frame(country = podatki_014$country, group = factor(cluster_014$cluster), percentage = podatki_014$percentage)
+centri_014_1980 <- sort(cluster_014_1980$centers)
 
-graf_cluster_014 <- ggplot(tabela, aes(x = country, y = percentage, color = group)) + geom_point()
+tabela_014_1980 <- data.frame(country = podatki_014_1980$country, 
+                         group = factor(cluster_014_1980$cluster), percentage = podatki_014_1980$percentage)
+tabela_014_1980$year <- 1980
 
 
+podatki_014_2015 <- StarostneStruktureProcent %>% filter(Age_group == "0-14",year == 2015)
+
+cluster_014_2015 <- kmeans(podatki_014_2015$percentage, 5)
+centri_014_2015 <- sort(cluster_014_2015$centers)
+
+tabela_014_2015 <- tibble(country = podatki_014_2015$country, 
+                          group = factor(cluster_014_2015$cluster), percentage = podatki_014_2015$percentage)
+tabela_014_2015$year <- 2015
+tabela_014 <- rbind(tabela_014_1980, tabela_014_2015)
+
+
+zemljevid_cluster_014_1980 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 1980), 
+                                             by.x = "NAME", by.y = "country")) + 
+  tm_polygons(col = "group", midpoint = 2.5)
+print(zemljevid_cluster_014_1980)
+zemljevid_cluster_014_2015 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 2015),
+                                             by.x = "NAME", by.y = "country")) + tm_polygons(col = "group", midpoint = 1)
+print(zemljevid_cluster_014_2015)
