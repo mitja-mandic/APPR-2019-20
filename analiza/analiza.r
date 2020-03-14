@@ -52,9 +52,10 @@ tabela_014 <- rbind(tabela_014_1980, tabela_014_2015)
 
 
 zemljevid_cluster_014_1980 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 1980), 
-                                             by.x = "NAME", by.y = "country")) + 
-  tm_polygons(col = "group", midpoint = 2.5)
+                                             by.x = "NAME", by.y = "country")) + #tm_polygons(col = "group", midpoint = 2.5)
+  tm_fill(col = "group", contrast = 1, palette = "YlOrRd")
 print(zemljevid_cluster_014_1980)
 zemljevid_cluster_014_2015 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 2015),
-                                             by.x = "NAME", by.y = "country")) + tm_polygons(col = "group", midpoint = 1)
+                                             by.x = "NAME", by.y = "country")) + #tm_polygons(col = "group", midpoint = 1)
+  tm_fill(col = "group", contrast = 1, palette = "YlOrRd")
 print(zemljevid_cluster_014_2015)
