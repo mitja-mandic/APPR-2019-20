@@ -27,8 +27,21 @@ graf_1564_napoved <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_
   geom_line(data = napoved_1564, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_1564, aes(y = percentageLoess, color = "blue"))
 
 
+procent_65 <- procenti_poLetih %>% filter(Age_group == "65+")
+napoved_65 <- tibble(year  = seq(1980,2025,5))
 
-#CLUSTERING
+model65_lm <- lm(data = procent_65, percentage~year)
+model65_loess <- loess(percentage~year, data = procent_65, control=loess.control(surface = "direct"))
+napoved_65$percentageLm <- predict(model65_lm, napoved_65)
+napoved_65$percentageLoess <- predict(model65_loess, napoved_65)
+
+graf_65_napoved <- ggplot(procent_65, aes(x = year, y = percentage))  + geom_line() + 
+  geom_line(data = napoved_65, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_65, aes(y = percentageLoess, color = "blue"))
+
+##CLUSTERING
+
+#procenti starostnih skupin (ni bed)
+#0 - 14
 podatki_014_1980 <- StarostneStruktureProcent %>% filter(Age_group == "0-14", year == 1980)
 
 cluster_014_1980 <- kmeans(podatki_014_1980$percentage, 5)
@@ -38,7 +51,6 @@ centri_014_1980 <- sort(cluster_014_1980$centers)
 tabela_014_1980 <- data.frame(country = podatki_014_1980$country, 
                          group = factor(cluster_014_1980$cluster), percentage = podatki_014_1980$percentage)
 tabela_014_1980$year <- 1980
-
 
 podatki_014_2015 <- StarostneStruktureProcent %>% filter(Age_group == "0-14",year == 2015)
 
@@ -52,10 +64,17 @@ tabela_014 <- rbind(tabela_014_1980, tabela_014_2015)
 
 
 zemljevid_cluster_014_1980 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 1980), 
-                                             by.x = "NAME", by.y = "country")) + #tm_polygons(col = "group", midpoint = 2.5)
-  tm_fill(col = "group", contrast = 1, palette = "YlOrRd")
-print(zemljevid_cluster_014_1980)
+                                             by.x = "NAME", by.y = "country")) + tm_fill(col = "group",palette = "Spectral")
+#print(zemljevid_cluster_014_1980)
 zemljevid_cluster_014_2015 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 2015),
-                                             by.x = "NAME", by.y = "country")) + #tm_polygons(col = "group", midpoint = 1)
-  tm_fill(col = "group", contrast = 1, palette = "YlOrRd")
-print(zemljevid_cluster_014_2015)
+                                             by.x = "NAME", by.y = "country")) + tm_fill(col = "group", palette = "Spectral")
+#print(zemljevid_cluster_014_2015)
+
+
+#po bdp
+cluster_bdpPc <- kmeans(bdpji$bdp_pc, 5)
+tabela_cluster_gdpPc <- tibble(country = bdpji$country,
+                               group = factor(cluster_bdpPc$cluster, ordered = TRUE),
+                               gdp_pc = bdpji$bdp_pc)
+
+
