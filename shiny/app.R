@@ -31,7 +31,7 @@ ui <- fluidPage(
                                        choices = c("x logaritmirana" = "logx",
                                                    "y logaritmirana" = "logy"),
                                                    selected = c("logx","logy"))),
-    mainPanel(plotOutput("grafBDP", height = "100%", width = "600px"))
+    mainPanel(plotOutput("grafBDP", height = "500px", width = "100%"))
     )
   ),
 tabPanel("Izobrazba",
@@ -63,7 +63,7 @@ tabPanel("Izobrazba",
                                            choices = c("x logaritmirana" = "logx2",
                                                        "y logaritmirana" = "logy2"),
                                            selected = c("logx2","logy2"))),
-                        mainPanel(plotOutput("grafIZO", height = "100%", width = "600px"))
+                        mainPanel(plotOutput("grafIZO", height = "500px", width = "100%"))
       )
     )
   )

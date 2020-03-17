@@ -43,7 +43,7 @@ povprecjaVere <-relig_starostne %>% group_by(Age_group, religion, year) %>%
 
 
 povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = religion)) + geom_line() + 
-  facet_wrap(Age_group~.)
+  facet_wrap(Age_group~.) + ggtitle("Graf starostnih skupin in religij skozi leta") + labs(x = "Leto", y = "Povprečen delež populacije")
 
 povpReligije <- ggplotly(povpReligije_graf)
 
@@ -52,5 +52,4 @@ povpReligije <- ggplotly(povpReligije_graf)
 zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "country")) + 
   #tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE, palette = "Pastel2") + 
   tm_fill(col = "median", contrast = 1, palette = "YlOrRd") +  tm_layout(legend.outside = TRUE) 
-print(zemljevid_median)
 

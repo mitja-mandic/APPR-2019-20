@@ -115,7 +115,7 @@ StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by
 bdpji <- inner_join(bdpji, populacija, by = c("country", "year")) %>% 
   mutate(bdp_pc = gdp / population) %>% select(-population) %>% rename(gdp_ppp = gdp)
 
-
+bdpji <- na.omit(bdpji)
 
 
 
