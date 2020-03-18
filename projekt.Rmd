@@ -31,7 +31,7 @@ Spreminjanje starostne strukture prebivalstva je zanje čase izjemno aktualna te
 # Obdelava, uvoz in čiščenje podatkov
 
 ```{r uvoz, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-source("uvoz/uvoz_podatkov.r", encoding="UTF-8")
+source("uvoz/uvoz_podatkov.R", encoding="UTF-8")
 ```
 
 Uvozili smo podatke o starostnih strukturah, populaciji in veroizpovedi v formatu CSV ter podatke o preteklih BDP-jih iz HTML tabel iz Wikipedie. Viri so natančno navedeni v "README.md".  
