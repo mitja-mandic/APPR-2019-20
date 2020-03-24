@@ -123,7 +123,7 @@ bdpji <- na.omit(bdpji)
 svet <- uvozi.zemljevid(
   "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
   "ne_50m_admin_0_countries", encoding="UTF-8")
-svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
+#svet$NAME <- standardize.countrynames(svet$NAME, suggest = "auto", print.changes = FALSE)
 
 #HDI 
 
@@ -146,7 +146,7 @@ median_age2018 <- page %>%
   html_table() %>% rename(country = "Country/Territory", median = "Median(Years)") %>%
   select(-'Rank', -'Male(Years)', -"Female (Years)")
 
-median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
+#median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
 
 
 
