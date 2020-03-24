@@ -91,8 +91,8 @@ religije_procenti <- religije %>% mutate(pop2019 = 1000*pop2019, christians = 10
 
 #CELOTE
 
-populacija <- read.csv("podatki/populacija.csv", na = ("..")) %>%
-  select(-"ï..Series.Name",-"Series.Code",-"Country.Code") 
+populacija <- read_csv("podatki/populacija.csv", na="..", locale=locale(encoding="UTF-8")) %>%
+  select(-"Series Name", -"Series Code", -"Country Code")
 colnames(populacija) <- c("country", leta)
 
 populacija <- populacija %>% gather(year, population, "1960":"2015") %>%
