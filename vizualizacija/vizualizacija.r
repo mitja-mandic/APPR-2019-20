@@ -50,7 +50,6 @@ povpReligije <- ggplotly(povpReligije_graf)
 #ZEMLJEVIDI tu je še nek problem
 
 zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "country")) + 
-  tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE, palette = "Pastel2") +
+  #tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE, palette = "Pastel2") +
+    tm_fill(col = "median", contrast = 1, palette = "YlOrRd") +  tm_layout(legend.outside = TRUE) +
   tm_layout(legend.outside = TRUE) 
-
-  #  tm_fill(col = "median", contrast = 1, palette = "YlOrRd") +  tm_layout(legend.outside = TRUE) 

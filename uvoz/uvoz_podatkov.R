@@ -146,6 +146,8 @@ median_age2018 <- page %>%
   html_table() %>% rename(country = "Country/Territory", median = "Median(Years)") %>%
   select(-'Rank', -'Male(Years)', -"Female (Years)")
 
+median_age2018 <- median_age2018[-76,]
+
 median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
 
 
