@@ -64,17 +64,38 @@ tabela_014 <- rbind(tabela_014_1980, tabela_014_2015)
 
 
 zemljevid_cluster_014_1980 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 1980), 
-                                             by.x = "NAME", by.y = "country")) + tm_fill(col = "group",palette = "Spectral")
+                                             by.x = "NAME", by.y = "country")) + 
+  tm_fill(col = "group",palette = "YlOrRd")
+
 #print(zemljevid_cluster_014_1980)
+
 zemljevid_cluster_014_2015 <- tm_shape(merge(svet, tabela_014 %>% filter(year == 2015),
-                                             by.x = "NAME", by.y = "country")) + tm_fill(col = "group", palette = "Spectral")
+                                             by.x = "NAME", by.y = "country")) + tm_fill(col = "group", palette = "YlOrRd")
 #print(zemljevid_cluster_014_2015)
 
 
-#po bdp
-cluster_bdpPc <- kmeans(bdpji$bdp_pc, 5)
-tabela_cluster_gdpPc <- tibble(country = bdpji$country,
-                               group = factor(cluster_bdpPc$cluster, ordered = TRUE),
-                               gdp_pc = bdpji$bdp_pc)
+podatki_65_2015 <- StarostneStruktureProcent %>% filter(Age_group == "65+", year == 2015)
+cluster_65_2015 <- kmeans(podatki_65_2015$percentage, 5)
+tabela_65_2015 <- tibble(country = podatki_65_2015$country, group = factor(cluster_65_2015$cluster, ordered = TRUE),
+                         percentage = podatki_65_2015$percentage)
 
+zemljevid_cluster_65_2015 <- tm_shape(merge(svet, tabela_65_2015, by.x = "NAME", by.y = "country")) + 
+  tm_fill(col = "group", palette = "YlOrRd")
+
+#print(zemljevid_cluster_65_2015)
+
+#PO BDP
+
+podatkiBdp_2015 <- bdpji %>% filter(year == 2015)
+
+cluster_bdpPc_2015 <- kmeans(podatkiBdp_2015$bdp_pc, 5)
+
+tabela_cluster_gdpPc <- tibble(country = podatkiBdp_2015$country,
+                               group = factor(cluster_bdpPc_2015$cluster, ordered = TRUE),
+                               gdp_pc = podatkiBdp_2015$bdp_pc)
+zemljevid_cluster_bdpPc_2015 <- tm_shape(merge(svet, tabela_cluster_gdpPc, by.x = "NAME", by.y = "country")) +
+  tm_fill(col = "group", palette = "YlOrRd")
+
+
+#print(zemljevid_cluster_bdpPc_2015)
 
