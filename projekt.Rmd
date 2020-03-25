@@ -94,5 +94,6 @@ povpReligije
 
 ```{r analiza, echo=FALSE, message=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-
+zemljevid_cluster_65_2015
 ```
+
