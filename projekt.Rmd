@@ -131,5 +131,5 @@ Pogledati smo želeli, kam se številke deleža določene starostne strukture pr
 
 ```{r analiza, echo=FALSE, message=FALSE, plotly=TRUE, warning=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-graf_014_napoved
+napovedi
 ```
