@@ -14,7 +14,6 @@ graf_014_napoved <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_li
   geom_line(data = napoved_014, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_014, aes(y = percentageLoess, color = "blue"))
 napoved_014 <- ggplotly(graf_014_napoved)
 
-
 procent_1564 <- procenti_poLetih %>% filter(Age_group == "15-64")
 napoved_1564 <- tibble(year = seq(1980,2025,5))
 
