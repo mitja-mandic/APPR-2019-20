@@ -26,7 +26,7 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # O temi
 
-Spreminjanje starostne strukture prebivalstva je zanje čase izjemno aktualna tema. V poročilu je predstavljeno nekaj podatkov o starostni sestavi držav po svetu. Vse države niso vključene, saj enostavno ni zbranih podatkov, pri temu pa gre za manjšino držav. Podatki pokrivajo leta med 1980 in 2015 na 5 let, saj se starostne strukture v roku enega leta ne spreminjajo bistveno.
+Spreminjanje starostne strukture prebivalstva je zadnje čase izjemno aktualna tema. V poročilu je predstavljeno nekaj podatkov o starostni sestavi držav po svetu. Vse države niso vključene, saj enostavno ni zbranih podatkov, pri temu pa gre za manjšino držav. Podatki pokrivajo leta med 1980 in 2015 na 5 let, saj se starostne strukture v roku enega leta ne spreminjajo bistveno.
 
 # Obdelava, uvoz in čiščenje podatkov
 
@@ -93,9 +93,9 @@ source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 zemljevid_median
 ```
 
-Vidimo torej, da imajo države v razvoju nižjo mediansko starost - Nemčija, ki velja za eno razvitejših držav, ima tako mediansko starost pri nekaj več kot 46 letih. Zanimivo je zato videti graf medianske starosti in BDP. Tu je precej očitna povezava med visokim BDP in visoko mediansko starostjo. Še enkrat pa bi rad povdaril, da so to podatki le za leto 2018, vendar pa sem na več mestih na spletu prebral, da se medianska starost od leta 1950 do 2000 ni veliko spremenila - dvignila se je iz 23,6 let na 26,4.
+Vidimo torej, da imajo države v razvoju nižjo mediansko starost - že omenjeni Niger, ki velja za državo v razvoju, ima mediansko starost pri 15 letih, Nemčija, ki pa je ena razvitejših držav, ima mediansko starost pri nekaj več kot 46 letih. Zanimivo je zato videti graf medianske starosti in BDP. Tu je precej očitna povezava med visokim BDP in visoko mediansko starostjo. Še enkrat pa bi rad povdaril, da so to podatki le za leto 2018, vendar pa sem na več mestih na spletu prebral, da se medianska starost od leta 1950 do 2000 ni veliko spremenila - dvignila se je iz 23,6 let na 26,4.
 
-```{r median_bdp_graf,plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
+```{r median_bdp_graf, plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
 median_bdp_graf
 ```
 
@@ -111,6 +111,7 @@ poLetih
 # Starostne strukture in razvitost države
 
 V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP in BDP-jem na prebivalca, ter HDI - *human development index*. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in višjim procentom starejše populacije.
+**Opomba**: Podatki HDI so bili dostopni samo od leta 1990 naprej.
 
 ```{r shiny, echo=FALSE}
 shinyAppDir("shiny",options=list(width="105%", height=730))
@@ -124,10 +125,10 @@ Zanimalo nas je, če obstaja povezava med večinsko veroizpovedjo v državi in s
 povpReligije
 ```
 
-# Napredna analiza podatkov
+# Kaj se bo dogajalo v prihodnje?
 
+Pogledati smo želeli, kam se številke deleža določene starostne strukture premikajo in s pomočjo linearne regresije in LOESS modela napovedati, kam bi lahko šle v prihodnje.
 ```{r analiza, echo=FALSE, message=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-zemljevid_cluster_65_2015
+napoved_014_graf
 ```
-
