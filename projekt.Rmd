@@ -130,5 +130,7 @@ povpReligije
 Pogledati smo želeli, kam se številke deleža določene starostne strukture premikajo in s pomočjo linearne regresije in LOESS modela napovedati, kam bi lahko šle v prihodnje.
 ```{r analiza, echo=FALSE, message=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-napoved_014_graf
+
+arrangeGrob(graf_014_napoved, graf_1564_napoved, graf_65_napoved, ncol=3)
+
 ```

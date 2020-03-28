@@ -12,6 +12,8 @@ library(StandardizeText)
 library(readxl)
 library(plotly)
 library(useful)
+library(gridExtra)
+library(grid)
 
 # Uvozimo funkcije za pobiranje in uvoz zemljevida.
 source("lib/uvozi.zemljevid.r", encoding="UTF-8")

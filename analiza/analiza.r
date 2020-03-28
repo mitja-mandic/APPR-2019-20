@@ -10,15 +10,13 @@ model014_loess <- loess(percentage~year, procent_014, control=loess.control(surf
 
 napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
 
-graf_014_napoved <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
+graf_014_napoved1 <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
   geom_line(data = napoved_014, aes(y = percentageLm, color = 'steelblue')) + 
   geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") + 
-  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved deleža starostne strukture 0-14")
+  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved  0-14")
 
-napoved_014_graf <- ggplotly(graf_014_napoved)
+graf_014_napoved <- ggplotly(graf_014_napoved1)
 #print(napoved_014_graf)
-
-
 
 procent_1564 <- procenti_poLetih %>% filter(Age_group == "15-64")
 napoved_1564 <- tibble(year = seq(1980,2025,5))
@@ -28,21 +26,36 @@ model1564_loess <- loess(percentage~year, data = procent_1564, control=loess.con
 napoved_1564$percentageLm <- predict(model1564_lm, napoved_1564)
 napoved_1564$percentageLoess <- predict(model1564_loess, napoved_1564)
 
-graf_1564_napoved <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_line() + 
-  geom_line(data = napoved_1564, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_1564, aes(y = percentageLoess, color = "blue"))
+graf_1564_napoved1 <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_line() + 
+  geom_line(data = napoved_1564, aes(y = percentageLm, color = "pink")) + 
+  geom_line(data = napoved_1564, aes(y = percentageLoess, color = "steelblue")) + theme(legend.position = "none") + 
+  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 15-65")
+    
+graf_1564_napoved <- ggplotly(graf_1564_napoved1)
+print(graf_1564_napoved)
+
+
 
 
 procent_65 <- procenti_poLetih %>% filter(Age_group == "65+")
 napoved_65 <- tibble(year  = seq(1980,2025,5))
+
 
 model65_lm <- lm(data = procent_65, percentage~year)
 model65_loess <- loess(percentage~year, data = procent_65, control=loess.control(surface = "direct"))
 napoved_65$percentageLm <- predict(model65_lm, napoved_65)
 napoved_65$percentageLoess <- predict(model65_loess, napoved_65)
 
-graf_65_napoved <- ggplot(procent_65, aes(x = year, y = percentage))  + geom_line() + 
-  geom_line(data = napoved_65, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_65, aes(y = percentageLoess, color = "blue"))
+graf_65_napoved1 <- ggplot(procent_65, aes(x = year, y = percentage))  + geom_line() + 
+  geom_line(data = napoved_65, aes(y = percentageLm, color = "pink")) + 
+  geom_line(data = napoved_65, aes(y = percentageLoess, color = "steelblue")) + theme(legend.position = "none") + 
+  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 65+")
+graf_65_napoved <- ggplotly(graf_65_napoved1)
 
+
+
+napovedi <- subplot(graf_014_napoved, graf_1564_napoved, graf_65_napoved, ncol = 3)
+print(napovedi)
 ##CLUSTERING
 
 #procenti starostnih skupin (ni bed)
