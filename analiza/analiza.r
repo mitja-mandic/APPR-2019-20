@@ -13,7 +13,7 @@ napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
 graf_014_napoved2 <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
   geom_line(data = napoved_014, aes(y = percentageLm, color = 'steelblue')) + 
   geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") +
-  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 0-14")
+  xlab("Procent") + ylab("0-14")
 
 graf_014_napoved <- ggplotly(graf_014_napoved2)
 #print(graf_014_napoved)
@@ -29,9 +29,7 @@ napoved_1564$percentageLoess <- predict(model1564_loess, napoved_1564)
 graf_1564_napoved1 <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_line() + 
   geom_line(data = napoved_1564, aes(y = percentageLm, color = "pink")) + 
   geom_line(data = napoved_1564, aes(y = percentageLoess, color = "steelblue")) + 
-  theme(legend.position = "none") + xlab("Procent") + ylab("Leto") +
-  ggtitle("Prileganje in napoved 15-65")
-    
+  theme(legend.position = "none") + xlab("Procent") + ylab("15-64")
 graf_1564_napoved <- ggplotly(graf_1564_napoved1)
 #print(graf_1564_napoved)
 
@@ -50,13 +48,13 @@ napoved_65$percentageLoess <- predict(model65_loess, napoved_65)
 graf_65_napoved1 <- ggplot(procent_65, aes(x = year, y = percentage))  + geom_line() + 
   geom_line(data = napoved_65, aes(y = percentageLm, color = "pink")) + 
   geom_line(data = napoved_65, aes(y = percentageLoess, color = "steelblue")) + theme(legend.position = "none") + 
-  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 65+")
+  xlab("Procent") + ylab("65+")
 graf_65_napoved <- ggplotly(graf_65_napoved1)
 
 
 
-napovedi <- subplot(graf_014_napoved, graf_1564_napoved, graf_65_napoved, nrows = 3)
-#print(napovedi)
+napovedi <- subplot(graf_014_napoved, graf_1564_napoved, graf_65_napoved, nrows = 3, titleY = TRUE)
+print(napovedi)
 
 ##CLUSTERING
 
