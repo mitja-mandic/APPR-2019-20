@@ -128,9 +128,8 @@ povpReligije
 # Kaj se bo dogajalo v prihodnje?
 
 Pogledati smo želeli, kam se številke deleža določene starostne strukture premikajo in s pomočjo linearne regresije in LOESS modela napovedati, kam bi lahko šle v prihodnje.
-```{r analiza, echo=FALSE, message=FALSE}
+
+```{r analiza, echo=FALSE, message=FALSE, plotly=TRUE, warning=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
-
-arrangeGrob(graf_014_napoved, graf_1564_napoved, graf_65_napoved, ncol=3)
-
+graf_014_napoved
 ```

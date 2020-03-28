@@ -10,13 +10,13 @@ model014_loess <- loess(percentage~year, procent_014, control=loess.control(surf
 
 napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
 
-graf_014_napoved1 <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
+graf_014_napoved2 <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
   geom_line(data = napoved_014, aes(y = percentageLm, color = 'steelblue')) + 
-  geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") + 
-  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved  0-14")
+  geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") +
+  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 0-14")
 
-graf_014_napoved <- ggplotly(graf_014_napoved1)
-#print(napoved_014_graf)
+graf_014_napoved <- ggplotly(graf_014_napoved2)
+#print(graf_014_napoved)
 
 procent_1564 <- procenti_poLetih %>% filter(Age_group == "15-64")
 napoved_1564 <- tibble(year = seq(1980,2025,5))
@@ -28,11 +28,12 @@ napoved_1564$percentageLoess <- predict(model1564_loess, napoved_1564)
 
 graf_1564_napoved1 <- ggplot(procent_1564, aes(x = year, y = percentage)) + geom_line() + 
   geom_line(data = napoved_1564, aes(y = percentageLm, color = "pink")) + 
-  geom_line(data = napoved_1564, aes(y = percentageLoess, color = "steelblue")) + theme(legend.position = "none") + 
-  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved 15-65")
+  geom_line(data = napoved_1564, aes(y = percentageLoess, color = "steelblue")) + 
+  theme(legend.position = "none") + xlab("Procent") + ylab("Leto") +
+  ggtitle("Prileganje in napoved 15-65")
     
 graf_1564_napoved <- ggplotly(graf_1564_napoved1)
-print(graf_1564_napoved)
+#print(graf_1564_napoved)
 
 
 
@@ -54,8 +55,9 @@ graf_65_napoved <- ggplotly(graf_65_napoved1)
 
 
 
-napovedi <- subplot(graf_014_napoved, graf_1564_napoved, graf_65_napoved, ncol = 3)
-print(napovedi)
+napovedi <- subplot(graf_014_napoved, graf_1564_napoved, graf_65_napoved, nrows = 3)
+#print(napovedi)
+
 ##CLUSTERING
 
 #procenti starostnih skupin (ni bed)
