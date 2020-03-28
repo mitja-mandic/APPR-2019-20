@@ -61,7 +61,7 @@ bdpji <- rbind(bdp_osemdeseta,bdp_devetdeseta,bdp_deseta,bdp_dvajseta)
 bdpji$gdp <- bdpji$gdp * 1000000
 bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print.changes = FALSE)
 
-
+bdpji_median <- bdpji
 
 
 poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
@@ -110,6 +110,7 @@ colnames(vsote) <- c("year","total", "prva", "druga", "tretja")
 
 StarostneStruktureProcent <- inner_join(StarostneStruktureCelota, populacija, by = c("country", "year")) %>%
   mutate(percentage = 100 * number/population) %>% select(-"population",-"number") 
+
 
 
 bdpji <- inner_join(bdpji, populacija, by = c("country", "year")) %>% 

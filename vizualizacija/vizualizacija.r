@@ -5,10 +5,12 @@ procenti_poLetih <- vsote %>% mutate(procent_014 = 100 * prva/total, procent_156
   gather(group, procent, "procent_014":"procent_65", -year) %>% arrange(year) %>%
   mutate(percentage = procent,Age_group = parse_number(group) %>% 
            factor(levels=c(14,1564,65), labels = c("0-14","15-64","65+"), ordered=TRUE)) %>% select(-procent, -group)
+
 procenti_poLetih <- procenti_poLetih[c(1,3,2)]
+
 procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color=Age_group)) + 
-  geom_col(position=position_dodge2(preserve = "total"), fill = 'white')+
-  labs(x = "leto", y = "procent", color = "Skupina")
+  geom_col(position=position_dodge2(preserve = "total"), fill = 'white') +
+  labs(y = "procent", color = "Skupina")
 poLetih <- ggplotly(procenti_poLetih_graf)
 
 
@@ -47,10 +49,20 @@ povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = relig
 
 povpReligije <- ggplotly(povpReligije_graf)
 
-#ZEMLJEVIDI tu je še nek problem
+#ZEMLJEVIDI
 
 zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "country")) + 
   #tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE, palette = "Pastel2") +
     tm_fill(col = "median", contrast = 1, palette = "YlOrRd") +  tm_layout(legend.outside = TRUE) +
   tm_layout(legend.outside = TRUE) 
 
+#MEDIANSKA STAROST IN BDP
+
+median_bdp <- bdpji_median %>% filter(year == 2018) %>% inner_join(median_age2018, by="country") %>% 
+  mutate(country = country %>% factor(ordered = TRUE))
+
+median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp, y=median, color = country)) + geom_point() + scale_x_log10() + 
+  theme(legend.position = "none") + xlab("BDP") + ylab("Medianska starost") + ggtitle("Graf BDP in medianske starosti")
+
+median_bdp_graf <- ggplotly(median_bdp_graf1, tooltip = "country")
+#print(median_bdp_graf)
