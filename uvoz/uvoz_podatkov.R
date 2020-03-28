@@ -64,16 +64,13 @@ bdpji$country <- standardize.countrynames(bdpji$country, suggest = "auto", print
 bdpji_median <- bdpji
 
 
-poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
-  select(-"gdp") %>% filter(Age_group == "0-14") %>% group_by(year) %>%
+poLetih_014 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>% filter(Age_group == "0-14") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
-  select(-"gdp") %>% filter(Age_group == "15-64") %>% group_by(year) %>%
+poLetih_1564 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>% filter(Age_group == "15-64") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
-poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>%
-  select(-"gdp") %>% filter(Age_group == "65+") %>% group_by(year) %>%
+poLetih_65 <- inner_join(StarostneStruktureCelota, bdpji, by=c("country", "year")) %>% filter(Age_group == "65+") %>% group_by(year) %>%
   summarise(number = sum(number, na.rm = TRUE))
 
 #RELIGIJE
@@ -151,8 +148,9 @@ median_age2018 <- median_age2018[-76,]
 
 median_age2018$country <- standardize.countrynames(median_age2018$country, suggest = "auto", print.changes = FALSE)
 
-
-
+populacija2018 <- read_csv("podatki/populacija2018.csv", na = c("..")) %>% select(-"Series Name", -"Series Code", -"Country Code")
+colnames(populacija2018) <- c("country", "population")
+populacija2018$country <- standardize.countrynames(populacija2018$country, print.changes = FALSE,suggest = "auto")
 
 #IZOBRAZBA
 

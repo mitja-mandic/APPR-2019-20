@@ -59,10 +59,10 @@ zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "
 #MEDIANSKA STAROST IN BDP
 
 median_bdp <- bdpji_median %>% filter(year == 2018) %>% inner_join(median_age2018, by="country") %>% 
-  mutate(country = country %>% factor(ordered = TRUE))
+  inner_join(populacija2018, by="country") %>% mutate(country = country %>% factor(ordered = TRUE), gdp_pc = gdp/population)
 
-median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp, y=median, color = country)) + geom_point() + scale_x_log10() + 
-  theme(legend.position = "none") + xlab("BDP") + ylab("Medianska starost") + ggtitle("Graf BDP in medianske starosti")
+median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp_pc, y=median, color = country)) + geom_point() + scale_x_log10() + 
+  theme(legend.position = "none") + xlab("BDP per capita") + ylab("Medianska starost") + ggtitle("Graf BDP p.c. in medianske starosti")
 
 median_bdp_graf <- ggplotly(median_bdp_graf1, tooltip = "country")
-#print(median_bdp_graf)
+#print(bdpji_median_graf)
