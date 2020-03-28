@@ -1,5 +1,5 @@
 procent_014 <- procenti_poLetih %>% filter(Age_group == "0-14")
-napoved_014 <- data.frame(year = seq(1980,2025,5))
+napoved_014 <- tibble(year = seq(1980,2025,5))
 
 model014_lm <- lm(data = procent_014, percentage~year)
 
@@ -11,8 +11,14 @@ model014_loess <- loess(percentage~year, procent_014, control=loess.control(surf
 napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
 
 graf_014_napoved <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
-  geom_line(data = napoved_014, aes(y = percentageLm, color = "red")) + geom_line(data = napoved_014, aes(y = percentageLoess, color = "blue"))
-napoved_014 <- ggplotly(graf_014_napoved)
+  geom_line(data = napoved_014, aes(y = percentageLm, color = 'steelblue')) + 
+  geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") + 
+  xlab("Procent") + ylab("Leto") + ggtitle("Prileganje in napoved deleža starostne strukture 0-14")
+
+napoved_014_graf <- ggplotly(graf_014_napoved)
+#print(napoved_014_graf)
+
+
 
 procent_1564 <- procenti_poLetih %>% filter(Age_group == "15-64")
 napoved_1564 <- tibble(year = seq(1980,2025,5))
