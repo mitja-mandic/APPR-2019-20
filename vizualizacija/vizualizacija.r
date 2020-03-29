@@ -11,8 +11,8 @@ procenti_poLetih <- procenti_poLetih[c(1,3,2)]
 procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color=Age_group)) + 
   geom_col(position=position_dodge2(preserve = "total"), fill = 'white') +
   labs(y = "Procent", color = "Skupina", x = "")
-poLetih <- ggplotly(procenti_poLetih_graf)
-
+poLetih <- ggplotly(procenti_poLetih_graf, tooltip = 'percentage')
+print(poLetih)
 
 
 
@@ -52,9 +52,9 @@ povpReligije <- ggplotly(povpReligije_graf)
 #ZEMLJEVIDI
 
 zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "country")) + 
-  #tm_polygons(col = "median", midpoint = 1, legend.hist = TRUE, palette = "Pastel2") +
-    tm_fill(col = "median", contrast = 1, palette = "YlOrRd") +  tm_layout(legend.outside = TRUE) +
-  tm_layout(legend.outside = TRUE) 
+  tm_fill(col = "median", contrast = 1, palette = "YlOrRd", title = "Medianska starost", textNA = "Manjkajoči podatki") +
+  tm_layout(legend.outside = TRUE)
+#print(zemljevid_median)
 
 #MEDIANSKA STAROST IN BDP
 
@@ -62,7 +62,12 @@ median_bdp <- bdpji_median %>% filter(year == 2018) %>% inner_join(median_age201
   inner_join(populacija2018, by="country") %>% mutate(country = country %>% factor(ordered = TRUE), gdp_pc = gdp/population)
 
 median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp_pc, y=median, color = country)) + geom_point() + scale_x_log10() + 
-  theme(legend.position = "none") + xlab("BDP per capita") + ylab("Medianska starost") + ggtitle("Graf BDP p.c. in medianske starosti")
+  theme(legend.position = "none") + xlab("BDP per capita") + ylab("Medianska starost") + 
+  ggtitle("Graf BDP p.c. in medianske starosti")
 
-median_bdp_graf <- ggplotly(median_bdp_graf1, tooltip = "country")
-#print(bdpji_median_graf)
+#print(median_bdp_graf1)
+
+median_bdp_graf <- ggplotly(median_bdp_graf1, tooltip = c("country", "median"))
+
+#print(median_bdp_graf)
+
