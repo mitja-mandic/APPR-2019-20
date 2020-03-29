@@ -26,7 +26,7 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # O temi
 
-Spreminjanje starostne strukture prebivalstva je zadnje čase izjemno aktualna tema. V poročilu je predstavljeno nekaj podatkov o starostni sestavi držav po svetu. Vse države niso vključene, saj enostavno ni zbranih podatkov, pri temu pa gre za manjšino držav. Podatki pokrivajo leta med 1980 in 2015 na 5 let, saj se starostne strukture v roku enega leta ne spreminjajo bistveno.
+Spreminjanje starostne strukture prebivalstva je zelo aktualna tema. V poročilu so starostne strukture držav predstavljene glede na različne parametre, ki vplivajo na kvaliteto življenja v državi in na njen razvoj. Podatki so zbrani od leta 1980 do 2015 na pet let (le podatki o *Human development index* so bili dostopni od 1990 dalje) in zajemajo veliko večino svetovnih držav - številka se skozi leta spreminja, vendar je vedno blizu 200.
 
 # Obdelava, uvoz in čiščenje podatkov
 
@@ -34,9 +34,8 @@ Spreminjanje starostne strukture prebivalstva je zadnje čase izjemno aktualna t
 source("uvoz/uvoz_podatkov.R", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o starostnih strukturah, populaciji in veroizpovedi v formatu CSV ter podatke o preteklih BDP-jih iz HTML tabel iz Wikipedie. Viri so natančno navedeni v "README.md".  
+Uvozili smo podatke o starostnih strukturah, populaciji, veroizpovedi, HDI in izobraženosti v formatu CSV ter podatke o preteklih BDP-jih in medianski starosti v letu 2018 iz HTML tabel iz Wikipedie. Viri so natančno navedeni v "README.md".
 Podatke imamo v tabelah v obliki *tidy data*:
-
 
 1. **`StarostneStruktureCelota`** - podatki starostni strukturi v državi:
   - `Age_group` - spremenljivka: starostna skupina (urejen faktor),
@@ -77,9 +76,7 @@ Podatke imamo v tabelah v obliki *tidy data*:
   - `percentage` - meritev: procent starostne skupine, ki bi se po zakonih države morala vključiti v stopnjo
                             izobrazbe
   
-  **_Opomba_**: vidimo, da pri nekaterih državah procent vključenih v stopnjo izobrazbe presega 100%. Razlog za to
-              je, da številka vključuje vse, ki obiskujejo določeno stopnjo izobrazbe, ne le tistih, ki bi jo
-              zakonsko morali (npr. ponavljalci)
+  **_Opomba_**: vidimo, da se v tabeli `enrollmentRatios` pri nekaterih državah procent vključenih v stopnjo izobrazbe presega 100%. Razlog za to je, da številka vključuje vse, ki obiskujejo določeno stopnjo izobrazbe, ne le tistih, ki bi jo zakonsko morali (npr. ponavljalci)
   
 ___
 
@@ -102,6 +99,7 @@ median_bdp_graf
 # Spreminjanje starostne sestave
 
 Svet se stara in sestava populacije se po svetu spreminja. Na grafu spodaj so predstavljeni deleži posameznih starostnih struktur v zadnjih 40 letih. Zelo jasno se vidi, kako se zmanjšuje število najmlajših prebivalcev sveta in dviguje procent odraslih ljudi. Že danes staranje prebivalstva predvsem na Zahodu (ter Japonskem) predstavlja velik finančni zalogaj, ki se bo v prihodnosti le še povečeval. 
+
 **Opomba**: Procenti se ponekod ne seštejejo v 100 - nekaj držav je podajalo samo podatke o številu prebivalcev, ne pa tudi o njihovih starostih.
 
 ```{r poLetih,plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
@@ -111,6 +109,9 @@ poLetih
 # Starostne strukture in razvitost države
 
 V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP in BDP-jem na prebivalca, ter HDI - *human development index*. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in višjim procentom starejše populacije.
+
+Na sosednjem zavihku pa je graf vključenosti prebivalstva v stopnjo izobrzbe in starostne sestave prebivalstva. Tu je morda najboljši pokazatelj vključenost v terciarno izobrazbo - torej višje šole in univerze - in je na pogled zelo podoben grafu HDI, kar je smiselno. Z zadovoljstvom pa lahko ugotovimo, da se vključenost otrok v osnovno šolstvo pri skoraj vseh državah sveta giblje okoli 100%, kar kaže na globalni napredek in povečevanje zaupanja v izobrazbo tudi v državah v razvoju.
+
 **Opomba**: Podatki HDI so bili dostopni samo od leta 1990 naprej.
 
 ```{r shiny, echo=FALSE}
@@ -127,9 +128,14 @@ povpReligije
 
 # Kaj se bo dogajalo v prihodnje?
 
-Pogledati smo želeli, kam se številke deleža določene starostne strukture premikajo in s pomočjo linearne regresije in LOESS modela napovedati, kam bi lahko šle v prihodnje.
+Pogledati smo želeli, kam se številke deleža določene starostne strukture premikajo in s pomočjo linearne regresije in LOESS modela napovedati, kam bi lahko šle v prihodnje. Na spodnjih grafih so s črno predstavljene dejanske številke, z rožnato je narisana linearna regresija ter z modro LOESS prileganje.
 
-```{r analiza, echo=FALSE, message=FALSE, plotly=TRUE, warning=FALSE}
+```{r napovedi, echo=FALSE, message=FALSE, plotly=TRUE, warning=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
 napovedi
 ```
+
+Vidimo, da se največje absolutno odstopanje v napovedi zgodi pri starosti 15-64 - tu LOESS napove padec deleža populacije, medtem ko linearno prileganje kar občutno rast še naprej. Relativno, pa je odstopanje ravno pri tej starostni strukturi najmanjše, največje pa pri najstarejših - tam so tudi številke najmanjše. 
+
+Zaključimo lahko, da je starost prebivalstva močno korelirana z raznimi dejavniki, ki vplivajo na dobrobit prebivalstva. Razvitejše države se nezadržno starajo, v manj razvitih pa se populacije mlajših ljudi večajo. To z pa z večjo dostopnostjo informacij o boljšem življenju na Zahodu nedvomno vpliva tudi na migrantske tokove.
+
