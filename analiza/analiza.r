@@ -11,8 +11,8 @@ model014_loess <- loess(percentage~year, procent_014, control=loess.control(surf
 napoved_014$percentageLoess <- predict(model014_loess, napoved_014)
 
 graf_014_napoved2 <- ggplot(procent_014, aes(x = year, y = percentage)) + geom_line() + 
-  geom_line(data = napoved_014, aes(y = percentageLm, color = 'steelblue')) + 
-  geom_line(data = napoved_014, aes(y = percentageLoess, color = 'pink')) + theme(legend.position = "none") +
+  geom_line(data = napoved_014, aes(y = percentageLm, color = 'pink')) + 
+  geom_line(data = napoved_014, aes(y = percentageLoess, color = 'steelblue')) + theme(legend.position = "none") +
   xlab("Procent") + ylab("0-14")
 
 graf_014_napoved <- ggplotly(graf_014_napoved2)

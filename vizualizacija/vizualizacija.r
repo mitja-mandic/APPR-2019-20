@@ -10,7 +10,7 @@ procenti_poLetih <- procenti_poLetih[c(1,3,2)]
 
 procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color=Age_group)) + 
   geom_col(position=position_dodge2(preserve = "total"), fill = 'white') +
-  labs(y = "procent", color = "Skupina")
+  labs(y = "Procent", color = "Skupina", x = "")
 poLetih <- ggplotly(procenti_poLetih_graf)
 
 
