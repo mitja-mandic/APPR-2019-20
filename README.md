@@ -1,4 +1,4 @@
-# Analiza starostne strukture prebivalstva po svetu
+# Starostne strukture po svetu
 
 Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 
@@ -7,15 +7,11 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 
 ## Tematika
 
-Analiziral bom starostne strukture prebivalcev 10 držav (ZDA, Kitajska, Indija, Tajska, Iran, Nigerija, Kenija, Brazilija, Nemčija in Slovenija) na različnih celinah. 
+Analiziral bom starostne skupine držav po svetu. Zanimalo me bo, kako nanje vplivajo razni dejavniki razvoja v državi - BDP po kupni moči prebivalca, BDP na prebivalca, HDI (*human development index*) ter vključenost prebivalstva v osnovno, srednje in višje šolstvo, ter vpliv religije na starost prebivalcev v državi. Zanimalo me bo tudi, kako so se starostne sestave skozi leta spreminjale in poskušal napovedati, kam se bodo gibale v naslednjih letih.
 
-Primerjal jih bom glede na razvitost države, torej glede na BDP na prebivalca po kupni moči, stopnjo izobraženosti prebivalstva (kolikšen delež ima zaključeno osnovno šolo) in prevladujočo religijo. Primerjal bom tudi spremembe v starostnih strukturah v času - današnjo in pa strukturo izpred 30 let.
+# Viri
 
-Podatke bom zbiral na:
-
-* https://www.worldbank.org/
-* https://ec.europa.eu/eurostat/data/database
-* https://www.wikipedia.org/
+Podatke bom zbiral na [Wikipedii](https://www.wikipedia.org/) in na spletni strani [World Bank](https://www.worldbank.org/). Iz slednje so v formatu CSV, iz Wikipedie v formatu HTML, uporabljen zemljevid sveta pa je uporabljen že vgrajen v R,
 
 ## Program
 
@@ -51,6 +47,13 @@ Za zagon tega vzorca je potrebno namestiti sledeče pakete za R:
 * `mosaic` - za pretvorbo zemljevidov v obliko za risanje z `ggplot2`
 * `maptools` - za delo z zemljevidi
 * `extrafont` - za pravilen prikaz šumnikov (neobvezno)
+* `tmap` - za risanje zemljevidov
+* `StandardizeCountrynames` - za poenotenje imen držav
+* `plotly` - za dodatno funkcionalnost grafov
+* `readxl` - za branje Excelovih datotek
+* `grid` - za postavitev grafov
+* `gridExtra` - dodatne nastavitve za postavitev grafov
+* `useful` - nabor uporabnih funkcij
 
 ## Binder
 
