@@ -12,8 +12,6 @@ procenti_poLetih_graf <- ggplot(procenti_poLetih, aes(x=year,y=percentage, color
   geom_col(position=position_dodge2(preserve = "total"), fill = 'white') +
   labs(y = "Procent", color = "Skupina", x = "")
 poLetih <- ggplotly(procenti_poLetih_graf, tooltip = 'percentage')
-print(poLetih)
-
 
 
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI narejeno v shinyju 
@@ -45,9 +43,11 @@ povprecjaVere <-relig_starostne %>% group_by(Age_group, religion, year) %>%
 
 
 povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = religion)) + geom_line() + 
-  facet_wrap(Age_group~.) + ggtitle("Graf starostnih skupin in religij skozi leta") + labs(x = "Leto", y = "Povprečen delež populacije")
-
+  facet_wrap(Age_group~.) + ggtitle("Graf starostnih skupin in religij skozi leta") + 
+  labs(x = "Leto", y = "Povprečen delež populacije", color = "Religija") + 
+  theme(axis.title.y = element_text(margin =margin(0,0,0,15)))
 povpReligije <- ggplotly(povpReligije_graf)
+print(povpReligije)
 
 #ZEMLJEVIDI
 
