@@ -35,6 +35,7 @@ source("uvoz/uvoz_podatkov.R", encoding="UTF-8")
 ```
 
 Uvozili smo podatke o starostnih strukturah, populaciji, veroizpovedi, HDI in izobraženosti v formatu CSV ter podatke o preteklih BDP-jih in medianski starosti v letu 2018 iz HTML tabel iz Wikipedie. Viri so natančno navedeni v "README.md".
+
 Podatke imamo v tabelah v obliki *tidy data*:
 
 1. **`StarostneStruktureCelota`** - podatki starostni strukturi v državi:
@@ -72,11 +73,15 @@ Podatke imamo v tabelah v obliki *tidy data*:
 6. **`enrollmentRatios`** - podatki, o vključenosti prebivalcev v izobrazbo držav:
   - `series` - spremenljivka: stopnja izobrazbe (urejen faktor)
   - `country` - spremenljivka: ime države (besedilo)
-  - `year` - spremenljivka: leto, v katerem je bil procent vključenih v stopnjo izobrazbe izmerjen)
+  - `year` - spremenljivka: leto, v katerem je bil procent vključenih v stopnjo izobrazbe izmerjen) (število)
   - `percentage` - meritev: procent starostne skupine, ki bi se po zakonih države morala vključiti v stopnjo
-                            izobrazbe
+                            izobrazbe (število)
   
-  **_Opomba_**: vidimo, da se v tabeli `enrollmentRatios` pri nekaterih državah procent vključenih v stopnjo izobrazbe presega 100%. Razlog za to je, da številka vključuje vse, ki obiskujejo določeno stopnjo izobrazbe, ne le tistih, ki bi jo zakonsko morali (npr. ponavljalci)
+  **_Opomba_**:
+  
+  - vidimo, da se v tabeli `enrollmentRatios` pri nekaterih državah procent vključenih v stopnjo izobrazbe presega 100%. Razlog za to je, da številka vključuje vse, ki obiskujejo določeno stopnjo izobrazbe, ne le tistih, ki bi jo zakonsko morali (npr. ponavljalci)
+  
+  - enota, v kateri je izražen BDP, je *international dollar*; to je hipotetična valuta, pogosto uporabljena v primerjavah držav med sabo in ima enako kupno moč, kot jo je imel Ameriški dolar v letu 2000.
   
 ___
 
@@ -90,7 +95,7 @@ source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 zemljevid_median
 ```
 
-Vidimo torej, da imajo države v razvoju nižjo mediansko starost - že omenjeni Niger, ki velja za državo v razvoju, ima mediansko starost pri 15 letih, Nemčija, ki pa je ena razvitejših držav, ima mediansko starost pri nekaj več kot 46 letih. Zanimivo je zato videti graf medianske starosti in BDP. Tu je precej očitna povezava med visokim BDP in visoko mediansko starostjo. Še enkrat pa bi rad poudaril, da so to podatki le za leto 2018, vendar pa sem na več mestih na spletu prebral, da se medianska starost od leta 1950 do 2000 ni veliko spremenila - dvignila se je iz 23,6 let na 26,4.
+Vidimo torej, da imajo države v razvoju nižjo mediansko starost - že omenjeni Niger, ki velja za državo v razvoju, ima mediansko starost pri 15 letih, Nemčija, ki pa je ena razvitejših držav, ima mediansko starost pri nekaj več kot 46 letih. Zanimivo je zato videti graf medianske starosti in BDP. Tu je precej očitna povezava med visokim BDP in visoko mediansko starostjo.
 
 **Opomba**: barve na grafu so samo za vizualni učinek, ne predstavljajo nobenega parametra.
 
@@ -101,8 +106,6 @@ median_bdp_graf
 # Spreminjanje starostne sestave
 
 Svet se stara in sestava populacije se po svetu spreminja. Na grafu spodaj so predstavljeni deleži posameznih starostnih struktur v zadnjih 40 letih. Zelo jasno se vidi, kako se zmanjšuje število najmlajših prebivalcev sveta in dviguje procent odraslih ljudi. Že danes staranje prebivalstva predvsem na Zahodu (ter Japonskem) predstavlja velik finančni zalogaj, ki se bo v prihodnosti le še povečeval. 
-
-**Opomba**: Procenti se ponekod ne seštejejo v 100 - nekaj držav je podajalo samo podatke o številu prebivalcev, ne pa tudi o njihovih starostih.
 
 ```{r poLetih,plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
 poLetih
@@ -122,9 +125,9 @@ shinyAppDir("shiny",options=list(width="105%", height=730))
 
 # Starostne strukture in religija
 
-Zanimalo nas je, če obstaja povezava med večinsko veroizpovedjo v državi in spreminjanjem starostne sestave njenega prebivalstva. Kot večinsko veroizpoved v državi smo vzeli tisto, katere delež vernikov je predstavljal največji del populacije. Vidimo, da imajo povprečno najnižji delež prebivalca tiste države, kjer se je največ ljudi izrazilo kot ateiste (v grafu kot _unaffiliated_). To je smiselno povezano z upadanjem števila verujočih v razvitih državah.
+Zanimalo nas je, če obstaja povezava med večinsko veroizpovedjo v državi in spreminjanjem starostne sestave njenega prebivalstva. Kot večinsko veroizpoved v državi smo vzeli tisto, katere delež vernikov je predstavljal največji del populacije. Vidimo, da imajo povprečno najnižji delež mladega prebivalstva tiste države, kjer se je največ ljudi izrazilo kot ateiste (v grafu kot _unaffiliated_). To je smiselno povezano z upadanjem števila verujočih v razvitih državah.
 
-```{r povpReligije,plotly = TRUE,echo=FALSE, message=FALSE, warning=FALSE}
+```{r povpReligije, echo=FALSE, message=FALSE, warning=FALSE, plotly=TRUE, fig.align='center'}
 povpReligije
 ```
 
