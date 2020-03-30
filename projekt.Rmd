@@ -115,7 +115,7 @@ poLetih
 
 V interaktivnem grafu smo predstavili, kako se spreminjajo starostne strukture z BDPjem države, merjenim v PPP in BDP-jem na prebivalca, ter HDI - *human development index*. Sploh pri slednjem indikatorju opazimo močno korelacijo med višjim indeksom in višjim procentom starejše populacije.
 
-Na sosednjem zavihku pa je graf vključenosti prebivalstva v stopnjo izobrzbe in starostne sestave prebivalstva. Tu je morda najboljši pokazatelj vključenost v terciarno izobrazbo - torej višje šole in univerze - in je na pogled zelo podoben grafu HDI, kar je smiselno. Z zadovoljstvom pa lahko ugotovimo, da se vključenost otrok v osnovno šolstvo pri skoraj vseh državah sveta giblje okoli 100%, kar kaže na globalni napredek in povečevanje zaupanja v izobrazbo tudi v državah v razvoj.
+Na sosednjem zavihku pa je graf vključenosti prebivalstva v stopnjo izobrzbe in starostne sestave prebivalstva. Tu je morda najboljši pokazatelj vključenost v terciarno izobrazbo - torej višje šole in univerze - in je na pogled zelo podoben grafu HDI, kar je smiselno. Z zadovoljstvom pa lahko ugotovimo, da se vključenost otrok v osnovno šolstvo pri skoraj vseh državah sveta giblje okoli 100%, kar kaže na globalni napredek in povečevanje zaupanja v izobrazbo tudi v državah v razvoju.
 
 **Opomba**: Podatki HDI so bili dostopni samo od leta 1990 naprej.
 
