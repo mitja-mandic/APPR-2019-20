@@ -54,6 +54,7 @@ Za zagon tega vzorca je potrebno namestiti sledeče pakete za R:
 * `grid` - za postavitev grafov
 * `gridExtra` - dodatne nastavitve za postavitev grafov
 * `useful` - nabor uporabnih funkcij
+* `scales` - za oblikovanje lestvic na oseh
 
 ## Binder
 

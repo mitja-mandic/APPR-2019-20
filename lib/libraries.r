@@ -14,6 +14,7 @@ library(plotly)
 library(useful)
 library(gridExtra)
 library(grid)
+library(scales)
 
 # Uvozimo funkcije za pobiranje in uvoz zemljevida.
 source("lib/uvozi.zemljevid.r", encoding="UTF-8")
