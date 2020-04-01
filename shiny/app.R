@@ -77,7 +77,7 @@ server <- function(input, output) {
       za_graf <- bdp_starostneStrutkure %>% filter(Age_group == input$skupina, year == input$leto1)
       ggplot(za_graf,
              aes(x = za_graf[ ,input$podatek], y = percentage)) + geom_point() + 
-        scale_x_log10() + scale_y_log10() +  xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
+        scale_x_log10(labels = comma) + scale_y_log10() +  xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
         geom_smooth(method = input$smooth, fullrange = FALSE) + 
         ggtitle(paste0("Izbran parameter: ", input$podatek, ", starostna skupina: ", input$skupina)) + 
         theme(plot.title = element_text(size = 13, face = "bold"))
@@ -86,7 +86,7 @@ server <- function(input, output) {
         za_graf <- bdp_starostneStrutkure %>% filter(Age_group == input$skupina)
         ggplot(za_graf,
                aes(x = za_graf[ ,input$podatek], y = percentage, color = factor(year))) + geom_point() + 
-          scale_x_log10() + scale_y_log10() + xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
+          scale_x_log10(labels = comma) + scale_y_log10() + xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
           geom_smooth(method = input$smooth, se = FALSE, fullrange = FALSE) + 
           ggtitle(paste0("Izbran parameter: ", input$podatek, ", starostna skupina: ", input$skupina)) + 
           theme(plot.title = element_text(size = 13, face = "bold")) + labs(color = "Leto")
@@ -97,7 +97,7 @@ server <- function(input, output) {
         if (input$leto1 != "skupaj"){
           za_graf <- bdp_starostneStrutkure %>% filter(Age_group == input$skupina, year == input$leto1)
           ggplot(za_graf,aes(x = za_graf[ ,input$podatek], y = percentage)) + geom_point() + 
-            scale_x_log10() +  xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji"))+
+            scale_x_log10(labels = comma) +  xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji"))+
             geom_smooth(method = input$smooth, fullrange = FALSE) + 
             ggtitle(paste0("Izbran parameter: ", input$podatek, ", starostna skupina: ", input$skupina)) + 
             theme(plot.title = element_text(size = 13, face = "bold"))
@@ -105,7 +105,7 @@ server <- function(input, output) {
         else{
           za_graf <- bdp_starostneStrutkure %>% filter(Age_group == input$skupina)
           ggplot(za_graf,aes(x = za_graf[ ,input$podatek], y = percentage, color = factor(year))) + geom_point() + 
-            scale_x_log10() + xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
+            scale_x_log10(labels = comma) + xlab(input$podatek) + ylab(paste0("Procent ", input$skupina, " v populaciji")) +
             geom_smooth(method = input$smooth, se = FALSE, fullrange = FALSE) + 
             ggtitle(paste0("Izbran parameter: ", input$podatek, ", starostna skupina: ", input$skupina)) + 
             theme(plot.title = element_text(size = 13, face = "bold")) + labs(color = "Leto")
@@ -157,7 +157,7 @@ server <- function(input, output) {
       if(input$leto2 != "skupaj"){
         grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, year == input$leto2, series == input$izo)
         ggplot(grafIzo, aes(x = percentageIzo, y = percentage)) + geom_point() + geom_smooth(method = input$smooth2, fullrange = FALSE) + 
-        scale_x_log10() + scale_y_log10() + xlab(input$izo) + ylab(paste0("Procent ", input$skupina2, " v populaciji")) +
+        scale_x_log10(labels = comma) + scale_y_log10() + xlab(input$izo) + ylab(paste0("Procent ", input$skupina2, " v populaciji")) +
           ggtitle(paste0("Stopnja izobrazbe: ",input$izo, ", starostna skupina: ", input$skupina2)) + 
           theme(plot.title = element_text(size = 13, face = "bold"))
       }
@@ -165,7 +165,7 @@ server <- function(input, output) {
         grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, series == input$izo)
         ggplot(grafIzo, aes(x = percentageIzo, y = percentage, color = factor(year))) + geom_point() + 
         geom_smooth(method = input$smooth2, fullrange = FALSE, se = FALSE) + 
-        scale_x_log10() + scale_y_log10() + xlab(input$izo) + ylab(paste0("Procent ", input$skupina2, " v populaciji")) +
+        scale_x_log10(labels = comma) + scale_y_log10() + xlab(input$izo) + ylab(paste0("Procent ", input$skupina2, " v populaciji")) +
           ggtitle(paste0("Stopnja izobrazbe: ",input$izo, ", starostna skupina: ", input$skupina2)) + 
           theme(plot.title = element_text(size = 13, face = "bold")) + labs(color = "Leto")
       }
@@ -175,7 +175,7 @@ server <- function(input, output) {
         if(input$leto2 != "skupaj"){
           grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, year == input$leto2, series == input$izo)
           ggplot(grafIzo, aes(x = percentageIzo, y = percentage)) + geom_point() + 
-          geom_smooth(method = input$smooth2, fullrange = FALSE) + scale_x_log10()  + xlab(input$izo) + 
+          geom_smooth(method = input$smooth2, fullrange = FALSE) + scale_x_log10(labels = comma)  + xlab(input$izo) + 
             ylab(paste0("Procent ", input$skupina2, " v populaciji")) + 
             ggtitle(paste0("Stopnja izobrazbe: ",input$izo, ", starostna skupina: ", input$skupina2)) + 
             theme(plot.title = element_text(size = 13, face = "bold"))
@@ -183,7 +183,7 @@ server <- function(input, output) {
         else{
           grafIzo <- izo_starostne %>% filter(Age_group == input$skupina2, series == input$izo)
           ggplot(grafIzo, aes(x = percentageIzo, y = percentage, color = factor(year))) + geom_point() + 
-           geom_smooth(method = input$smooth2, fullrange = FALSE, se = FALSE) + scale_x_log10() + xlab(input$izo) + 
+           geom_smooth(method = input$smooth2, fullrange = FALSE, se = FALSE) + scale_x_log10(labels = comma) + xlab(input$izo) + 
             ylab(paste0("Procent ", input$skupina2, " v populaciji")) + 
             ggtitle(paste0("Stopnja izobrazbe: ",input$izo, ", starostna skupina: ", input$skupina2)) + 
             theme(plot.title = element_text(size = 13, face = "bold")) + labs(color = "Leto")

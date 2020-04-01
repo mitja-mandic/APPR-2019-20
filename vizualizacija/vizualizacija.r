@@ -17,7 +17,8 @@ poLetih <- ggplotly(procenti_poLetih_graf, tooltip = 'percentage')
 #BDP(ppp) IN STAROSTNE STRUKTURE GRAFI narejeno v shinyju 
 
 bdp_starostneStrutkure <- inner_join(bdpji, StarostneStruktureProcent, by=c("year", "country")) %>%
-  left_join(hdi, by = c("country", "year")) %>% left_join(populacija, by = c("year", "country"))
+  left_join(hdi, by = c("country", "year")) %>% left_join(populacija, by = c("year", "country")) %>% 
+  mutate(gdp_ppp = gdp_ppp/1000000)
 
 bdp_starostneStrutkure_graf <- ggplot(bdp_starostneStrutkure %>% filter(Age_group=="0-14"),
                                       aes(x=country, y = percentage, color = factor(year))) + geom_point() + 
@@ -28,8 +29,11 @@ bdp_starostne <- ggplotly(bdp_starostneStrutkure_graf)
 
 
 #RELIGIJE IN STAROSTNE STRUKTURE
+religije_procenti <- religije_procenti %>% rename('muslimani' = muslims ,'kristjani' = christians, 'tradicionalna verovanja' = folkReligions, 
+                                                  'hindujci' = hindus, 'judje' = jews, 'neverujoči' = unaffiliated, 'ostalo' = other, 'budisti' = buddhists)
+
 religion_tidy <- religije_procenti %>% 
-  gather(religion, percentage, "muslims":"christians",-country, na.rm = TRUE) %>%
+  gather(religion, percentage, "muslimani":"kristjani",-country, na.rm = TRUE) %>%
   mutate(religion = religion %>% factor(ordered = TRUE)) %>% arrange(country, desc(percentage))
 
 religion_unique <- religion_tidy %>% distinct(country, .keep_all = TRUE)
@@ -45,7 +49,7 @@ povprecjaVere <-relig_starostne %>% group_by(Age_group, religion, year) %>%
 povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = religion)) + geom_line() + 
   facet_wrap(Age_group~.) + ggtitle("Graf starostnih skupin in religij skozi leta") + 
   labs(x = "Leto", y = "Povprečen delež populacije", color = "Religija") + 
-  theme(axis.title.y = element_text(margin =margin(0,0,0,15)))
+  theme(axis.title.y = element_text(hjust = 1))
 povpReligije <- ggplotly(povpReligije_graf)
 print(povpReligije)
 
@@ -61,7 +65,7 @@ zemljevid_median <- tm_shape(merge(svet, median_age2018, by.x = "NAME", by.y = "
 median_bdp <- bdpji_median %>% filter(year == 2018) %>% inner_join(median_age2018, by="country") %>% 
   inner_join(populacija2018, by="country") %>% mutate(country = country %>% factor(ordered = TRUE), gdp_pc = gdp/population)
 
-median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp_pc, y=median, color = country)) + geom_point() + scale_x_log10() + 
+median_bdp_graf1 <- ggplot(median_bdp, aes(x = gdp_pc, y=median, color = country)) + geom_point() + scale_x_log10(labels = comma) + 
   theme(legend.position = "none") + xlab("BDP per capita") + ylab("Medianska starost") + 
   ggtitle("Graf BDP p.c. in medianske starosti")
 
