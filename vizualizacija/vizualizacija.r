@@ -45,7 +45,6 @@ relig_starostne <- inner_join(religion_unique, StarostneStruktureProcent, by = "
 povprecjaVere <-relig_starostne %>% group_by(Age_group, religion, year) %>% 
   summarise(povp = mean(percentage))
 
-
 povpReligije_graf <- ggplot(povprecjaVere, aes(x = year, y = povp, color = religion)) + geom_line() + 
   facet_wrap(Age_group~.) + ggtitle("Graf starostnih skupin in religij skozi leta") + 
   labs(x = "Leto", y = "Povprečen delež populacije", color = "Religija") + 
